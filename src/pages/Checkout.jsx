@@ -54,20 +54,12 @@ const Checkout = () => {
         }
     };
 
-    /* ------------------------------------------------------------------ */
-    /*  Render order:
-     *  1. Loading
-     *  2. Success (order placed)
-     *  3. Empty cart (only when NOT success)
-     *  4. Normal checkout form
-     * ------------------------------------------------------------------ */
     if (cartLoading) return <LoadingState />;
-    if (isSuccess) return <SuccessState />;                 // SUCCESS FIRST
-    if (!cart || cart.items.length === 0) return <EmptyCart />; // THEN empty check
+    if (isSuccess) return <SuccessState />;              
+    if (!cart || cart.items.length === 0) return <EmptyCart />;
 
     return (
         <>
-            {/* Page Title */}
             <section className="bg-[#5a88ca] py-12">
                 <div className="container mx-auto px-4 text-center">
                     <h1 className="text-5xl font-bold text-white">Checkout</h1>
@@ -77,9 +69,7 @@ const Checkout = () => {
             <section className="py-12">
                 <div className="container mx-auto px-4">
                     <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* ---------- LEFT: Billing & Shipping ---------- */}
                         <div className="space-y-8">
-                            {/* Billing */}
                             <div className="bg-white p-6 rounded-lg shadow-sm">
                                 <h2 className="text-2xl font-bold text-[#5a88ca] uppercase mb-6 tracking-wider">
                                     Billing Details
@@ -91,7 +81,6 @@ const Checkout = () => {
                                 />
                             </div>
 
-                            {/* Shipping */}
                             <div className="bg-white p-6 rounded-lg shadow-sm">
                                 <label className="flex items-center gap-2 cursor-pointer select-none">
                                     <input
@@ -114,7 +103,6 @@ const Checkout = () => {
                                 )}
                             </div>
 
-                            {/* Order Notes */}
                             <div className="bg-white p-6 rounded-lg shadow-sm">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Order Notes (optional)
@@ -129,9 +117,7 @@ const Checkout = () => {
                             </div>
                         </div>
 
-                        {/* ---------- RIGHT: Order Review ---------- */}
                         <div className="space-y-6">
-                            {/* Order Summary */}
                             <div className="bg-white p-6 rounded-lg shadow-sm">
                                 <h2 className="text-2xl font-bold text-[#5a88ca] uppercase mb-6 tracking-wider">
                                     Your Order
@@ -175,7 +161,6 @@ const Checkout = () => {
                                 </table>
                             </div>
 
-                            {/* Payment Methods */}
                             <div className="bg-white p-6 rounded-lg shadow-sm">
 
                                 <h2 className="text-2xl font-bold text-[#5a88ca] uppercase mb-6 tracking-wider">
@@ -209,7 +194,6 @@ const Checkout = () => {
                                 </div>
                             </div>
 
-                            {/* Place Order */}
                             <button
                                 type="submit"
                                 disabled={isLoading}
@@ -239,12 +223,8 @@ const Checkout = () => {
     );
 };
 
-/* ------------------------------------------------------------------ */
-/*  Reusable components (AddressForm, Input, PaymentOption, states)   */
-/* ------------------------------------------------------------------ */
 const AddressForm = ({ prefix, data, onChange }) => (
     <div className="space-y-4">
-        {/* Civility */}
         <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
                 Civility <span className="text-red-500">*</span>
@@ -260,7 +240,6 @@ const AddressForm = ({ prefix, data, onChange }) => (
             </select>
         </div>
 
-        {/* Name */}
         <div className="grid grid-cols-2 gap-4">
             <Input label="First Name" required value={data.firstName} onChange={(e) => onChange('firstName', e)} />
             <Input label="Last Name" required value={data.lastName} onChange={(e) => onChange('lastName', e)} />
@@ -317,9 +296,7 @@ const PaymentOption = ({ id, label, icon, checked, onChange, description }) => (
     </label>
 );
 
-/* ------------------------------------------------------------------ */
-/*  UI States                                                         */
-/* ------------------------------------------------------------------ */
+
 const LoadingState = () => (
     <div className="text-center py-40">
         <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>

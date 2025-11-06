@@ -11,116 +11,107 @@ const Cart = () => {
     return (
         <section className="py-8">
             <div className="container mx-auto px-4">
-                
-                {/* CART TABLE */}
+
                 <div className="bg-white border -lg shadow-sm overflow-hidden mb-8">
-                   <table className="w-full text-sm border border-gray-300 border-collapse">
-  <thead className="bg-gray-100">
-    <tr>
-      <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
-        Action
-      </th>
-      <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
-        Image
-      </th>
-      <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
-        Product
-      </th>
-      <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
-        Price
-      </th>
-      <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
-        Quantity
-      </th>
-      <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
-        Total
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    {cart.items.map((item) => (
-      <tr key={item.id} className="hover:bg-gray-50">
-        {/* Action - Centered */}
-        <td className="text-center border border-gray-300 py-4">
-          <button
-            onClick={() => removeItem(item.id)}
-            disabled={isUpdating}
-            className="text-red-600 hover:text-red-900 disabled:opacity-50"
-            title="Remove item"
-          >
-            <Trash2 className="w-5 h-5 mx-auto" />
-          </button>
-        </td>
+                    <table className="w-full text-sm border border-gray-300 border-collapse">
+                        <thead className="bg-gray-100">
+                            <tr>
+                                <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
+                                    Action
+                                </th>
+                                <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
+                                    Image
+                                </th>
+                                <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
+                                    Product
+                                </th>
+                                <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
+                                    Price
+                                </th>
+                                <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
+                                    Quantity
+                                </th>
+                                <th className="text-center py-3 font-semibold text-gray-800 uppercase border border-gray-300">
+                                    Total
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cart.items.map((item) => (
+                                <tr key={item.id} className="hover:bg-gray-50">
+                                    <td className="text-center border border-gray-300 py-4">
+                                        <button
+                                            onClick={() => removeItem(item.id)}
+                                            disabled={isUpdating}
+                                            className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                                            title="Remove item"
+                                        >
+                                            <Trash2 className="w-5 h-5 mx-auto" />
+                                        </button>
+                                    </td>
 
-        {/* Image - Centered */}
-        <td className="text-center border border-gray-300 py-4">
-          <Link to={`/product/${item.id}`} className="flex justify-center">
-            <img
-              src={`../src/assets/img/products/${item.imageName}`}
-              alt={item.name}
-              className="w-20 h-20 object-cover"
-            />
-          </Link>
-        </td>
+                                    <td className="text-center border border-gray-300 py-4">
+                                        <Link to={`/product/${item.id}`} className="flex justify-center">
+                                            <img
+                                                src={`../src/assets/img/products/${item.imageName}`}
+                                                alt={item.name}
+                                                className="w-20 h-20 object-cover"
+                                            />
+                                        </Link>
+                                    </td>
 
-        {/* Product Name - Centered */}
-        <td className="text-center border border-gray-300 py-4">
-          <Link
-            to={`/product/${item.id}`}
-            className="text-gray-800 hover:text-blue-600 font-medium block"
-          >
-            {item.name}
-          </Link>
-        </td>
+                                    <td className="text-center border border-gray-300 py-4">
+                                        <Link
+                                            to={`/product/${item.id}`}
+                                            className="text-gray-800 hover:text-blue-600 font-medium block"
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    </td>
 
-        {/* Price - Centered */}
-        <td className="text-center py-4 text-gray-700 border border-gray-300">
-          {item.price.toFixed(2)} €
-        </td>
+                                    <td className="text-center py-4 text-gray-700 border border-gray-300">
+                                        {item.price.toFixed(2)} €
+                                    </td>
 
-        {/* Quantity Controls - Centered */}
-        <td className="text-center border border-gray-300 py-4">
-          <div className="flex items-center justify-center space-x-2">
-            <button
-              onClick={() =>
-                updateQuantity(item.id, Math.max(1, item.qty - 1))
-              }
-              disabled={isUpdating || item.qty <= 1}
-              className="bg-[#5a88ca] text-white p-3 disabled:opacity-50 rounded"
-            >
-              <Minus className="w-4 h-4" />
-            </button>
-            <input
-              type="number"
-              value={item.qty}
-              onChange={(e) =>
-                updateQuantity(item.id, parseInt(e.target.value) || 1)
-              }
-              min="1"
-              className="w-12 text-center border border-gray-300 p-3"
-              disabled={isUpdating}
-            />
-            <button
-              onClick={() => updateQuantity(item.id, item.qty + 1)}
-              disabled={isUpdating}
-              className="bg-[#5a88ca] text-white p-3 disabled:opacity-50 rounded"
-            >
-              <Plus className="w-4 h-4" />
-            </button>
-          </div>
-        </td>
+                                    <td className="text-center border border-gray-300 py-4">
+                                        <div className="flex items-center justify-center space-x-2">
+                                            <button
+                                                onClick={() =>
+                                                    updateQuantity(item.id, Math.max(1, item.qty - 1))
+                                                }
+                                                disabled={isUpdating || item.qty <= 1}
+                                                className="bg-[#5a88ca] text-white p-3 disabled:opacity-50 rounded"
+                                            >
+                                                <Minus className="w-4 h-4" />
+                                            </button>
+                                            <input
+                                                type="number"
+                                                value={item.qty}
+                                                onChange={(e) =>
+                                                    updateQuantity(item.id, parseInt(e.target.value) || 1)
+                                                }
+                                                min="1"
+                                                className="w-12 text-center border border-gray-300 p-3"
+                                                disabled={isUpdating}
+                                            />
+                                            <button
+                                                onClick={() => updateQuantity(item.id, item.qty + 1)}
+                                                disabled={isUpdating}
+                                                className="bg-[#5a88ca] text-white p-3 disabled:opacity-50 rounded"
+                                            >
+                                                <Plus className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </td>
 
-        {/* Total - Centered */}
-        <td className="text-center py-4 text-gray-900 font-semibold border border-gray-300 p-2">
-          {(item.price * item.qty).toFixed(2)} €
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
+                                    <td className="text-center py-4 text-gray-900 font-semibold border border-gray-300 p-2">
+                                        {(item.price * item.qty).toFixed(2)} €
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
 
-
-                    {/* CHECKOUT BUTTON */}
                     <div className="p-4  text-center">
                         <Link
                             to="/checkout"
@@ -132,7 +123,6 @@ const Cart = () => {
                     </div>
                 </div>
 
-                {/* BOTTOM SECTION */}
                 <div className="flex flex-col lg:flex-row gap-6">
                     <div className="flex-1 bg-white shadow-sm p-6">
                         <h2 className="text-lg font-bold text-[#5a88ca] uppercase mb-4">
@@ -166,7 +156,6 @@ const Cart = () => {
                         </div>
                     </div>
 
-                    {/* CART TOTALS */}
                     <div className="w-full lg:w-1/3 bg-white shadow-sm p-6">
                         <h2 className="text-lg font-bold text-[#5a88ca] uppercase mb-4">
                             Cart Totals

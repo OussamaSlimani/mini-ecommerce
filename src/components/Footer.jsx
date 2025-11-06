@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useCategories } from '../hooks/useCategories';
-import { Mail, Facebook, Twitter, Youtube, Instagram } from 'lucide-react';
 
 const Footer = () => {
   const { data: categories = [], isLoading } = useCategories();

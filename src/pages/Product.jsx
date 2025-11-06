@@ -17,7 +17,6 @@ const Product = () => {
   const { addItem: addToCart, isUpdating: isCartUpdating } = useCart();
   const [quantity, setQuantity] = useState(1);
 
-  // Find category that matches product name
   const { data: categories = [] } = useCategories();
   const category = categories.find(c =>
     product?.name.toLowerCase().includes(c.name.toLowerCase())
@@ -25,7 +24,6 @@ const Product = () => {
 
   const { data: categoryDetail } = useCategory(category?.id);
 
-  // Add to recently viewed on mount
   useEffect(() => {
     if (product) {
       addToRecentlyViewed(product);
@@ -64,15 +62,12 @@ const Product = () => {
     <section className="py-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
           <div className="lg:col-span-1 space-y-6">
             <RecentlyViewedSidebar />
             <OtherBrandsSidebar currentCategoryId={category?.id} />
           </div>
 
-          {/* Main Content */}
           <div className="lg:col-span-3">
-            {/* Breadcrumb */}
             <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
               <Link to="/" className="flex items-center hover:text-blue-600">
                 <Home className="w-4 h-4 mr-1" /> Home
@@ -86,16 +81,13 @@ const Product = () => {
             </nav>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Image Gallery */}
               <div>
                 <ProductImageGallery mainImage={mainImage} thumbnails={thumbnails} />
               </div>
 
-              {/* Product Info */}
               <div className="space-y-6">
                 <h1 className="text-3xl font-bold text-gray-800">{product.name}</h1>
 
-                {/* Price */}
                 <div className="flex items-center space-x-4">
                   <div className="text-3xl font-bold text-[#5a88ca]">${product.price}</div>
                   {originalPrice && (
@@ -103,7 +95,6 @@ const Product = () => {
                   )}
                 </div>
 
-                {/* Quantity & Add to Cart */}
                 <div className="flex items-center space-x-4">
                   <input
                     type="number"
@@ -123,7 +114,6 @@ const Product = () => {
                   </button>
                 </div>
 
-                {/* Description */}
                 <div className="prose max-w-none">
                   <h2 className="text-xl font-bold text-gray-800 mb-3">Product Description</h2>
                   <p className="text-gray-600 leading-relaxed">{product.description}</p>

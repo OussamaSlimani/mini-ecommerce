@@ -17,7 +17,7 @@ const Header = () => {
     const query = searchTerm.trim();
     if (query) {
       navigate(`/search?q=${encodeURIComponent(query)}`);
-      setSearchTerm(''); // Clear input
+      setSearchTerm(''); 
     }
   };
 
@@ -29,7 +29,6 @@ const Header = () => {
     <header className="container mx-auto px-4">
       <div className="flex items-center justify-between gap-4 py-3">
 
-        {/* Logo */}
         <div className="flex-shrink-0">
           <Link to="/" className="block w-24 h-24 sm:w-28 sm:h-28">
             <img
@@ -40,7 +39,6 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Search Bar */}
         {!hideNavSearchbar && (
           <div className="flex-1 max-w-md w-full">
             <form onSubmit={handleSearch} className="flex gap-2">
@@ -62,7 +60,6 @@ const Header = () => {
           </div>
         )}
 
-        {/* Cart Link */}
         <div className="flex-shrink-0">
           <Link
             to="/cart"
@@ -74,7 +71,6 @@ const Header = () => {
             </span>
             <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
             
-            {/* Item Count Badge */}
             <span
               className={`
                 absolute -top-2 -right-2 
@@ -92,7 +88,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Navbar below search on larger screens */}
       {!hideNavSearchbar && <Navbar />}
     </header>
   );

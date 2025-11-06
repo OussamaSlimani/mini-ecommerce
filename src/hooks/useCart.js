@@ -110,7 +110,6 @@ export const useCart = () => {
     });
   };
 
-  // NEW: Clear cart completely
   const clearCart = async () => {
     if (!cartId) return;
 

@@ -6,7 +6,6 @@ const ProductImageGallery = ({ mainImage, thumbnails = [] }) => {
 
   return (
     <div className="space-y-6">
-      {/* Main Image */}
       <div className="relative aspect-square w-full bg-gray-50 rounded-xl overflow-hidden shadow-sm">
         <img
           src={selected}
@@ -15,7 +14,6 @@ const ProductImageGallery = ({ mainImage, thumbnails = [] }) => {
         />
       </div>
 
-      {/* Thumbnails */}
       {allImages.length > 1 && (
         <div className="grid grid-cols-5 gap-3">
           {allImages.map((img, index) => (
