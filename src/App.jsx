@@ -6,6 +6,7 @@ import ErrorPage from './components/ErrorBoundary';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import SearchResults from './pages/SearchResults';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
   path: 'checkout',
   element: <Checkout />
+},
+{
+  path: 'search',
+  element: <SearchResults />
 }
     ],
   },

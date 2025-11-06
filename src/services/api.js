@@ -71,3 +71,9 @@ export const createOrder = async (orderData) => {
   if (!res.ok) throw new Error('Failed to create order');
   return res.json();
 };
+
+export const fetchAllProducts = async () => {
+  const res = await fetch('http://localhost:3000/products');
+  if (!res.ok) throw new Error('Failed to fetch products');
+  return res.json();
+};

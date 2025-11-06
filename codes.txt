@@ -1,3 +1,5 @@
+components/category
+
 import { Link } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '../../hooks/useCart';
@@ -77,3 +79,5 @@ const ProductCard = ({ product }) => {
 };
 
 export default ProductCard;
+
+
