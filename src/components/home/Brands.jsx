@@ -1,6 +1,6 @@
 export function Brands() {
   const brands = [
-    { id: 1, src: '/src/assets/img/brand/brand1.png', alt: 'Brand 1' },
+    { id: 1, src: '../../src/assets/img/brand/brand1.png', alt: 'Brand 1' },
     { id: 2, src: '/src/assets/img/brand/brand2.png', alt: 'Brand 2' },
     { id: 3, src: '/src/assets/img/brand/brand3.png', alt: 'Brand 3' },
     { id: 4, src: '/src/assets/img/brand/brand4.png', alt: 'Brand 4' },
@@ -11,7 +11,7 @@ export function Brands() {
   ];
 
   return (
-    <div className="brands-area bg-gray-50 py-8">
+    <div className="py-8">
       <div className="zigzag-bottom"></div>
       <div className="container mx-auto px-4">
         <div className="brand-wrapper overflow-hidden">

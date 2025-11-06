@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useRecentlyViewed } from '../../hooks/useRecentlyViewed';
 import StarRating from './StarRating';
-import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 
 const ProductItem = ({ product, onView }) => {
 
@@ -27,7 +27,7 @@ const ProductItem = ({ product, onView }) => {
         </h3>
         <StarRating rating={product.review} />
         <div className="mt-1 text-sm">
-          <ins className="text-green-600 font-semibold">${product.price}</ins>
+          <ins className="text-[#5a88ca] font-semibold">${product.price}</ins>
           {product.discountRate > 0 && (
             <del className="text-gray-400 ml-2">
               ${Math.round(product.price * 100 / (100 - product.discountRate))}
@@ -48,11 +48,11 @@ const ProductWidget = ({ title, items = [], isLoading, viewAllLink, type }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-gray-800">{title}</h2>
+        <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
         {items.length > 3 && (
           <button
             onClick={() => setShowAll(!showAll)}
-            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            className="bg-[#5a88ca] text-white p-3"
           >
             {showAll ? 'Show Less' : 'View All'}
           </button>

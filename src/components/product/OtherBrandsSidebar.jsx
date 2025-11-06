@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useCategories } from '../hooks/useCategories';
+import { useCategories } from '../../hooks/useCategories';
 
 const OtherBrandsSidebar = ({ currentCategoryId }) => {
   const { data: categories = [], isLoading } = useCategories();
@@ -10,7 +10,7 @@ const OtherBrandsSidebar = ({ currentCategoryId }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">Other Brands</h2>
+      <h2 className="text-2xl font-semibold text-orange-400 uppercase mb-4">Other Brands</h2>
       <ul className="space-y-2">
         {otherBrands.map((cat) => (
           <li key={cat.id}>

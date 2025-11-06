@@ -3,7 +3,9 @@ import RootLayout from './pages/RootLayout';
 import Home from './pages/Home';
 import Category from './pages/Category';
 import ErrorPage from './components/ErrorBoundary';
-import Produit from './pages/Produit';
+import Product from './pages/Product';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 
 const router = createBrowserRouter([
   {
@@ -15,8 +17,16 @@ const router = createBrowserRouter([
       { path: 'category/:id', element: <Category /> },
       {
         path: 'product/:id',
-        element: <Produit />
-      }
+        element: <Product />
+      },
+       {
+        path: 'cart',
+        element: <Cart />
+      },
+      {
+  path: 'checkout',
+  element: <Checkout />
+}
     ],
   },
 ]);

@@ -39,3 +39,35 @@ export const fetchProduct = async (id) => {
   if (!res.ok) throw new Error('Product not found');
   return res.json();
 };
+
+export const fetchCarts = async () => {
+  const res = await fetch('http://localhost:3000/carts');
+  if (!res.ok) throw new Error('Failed to load carts');
+  return res.json();
+};
+
+export const fetchCart = async (cartId) => {
+  const res = await fetch(`http://localhost:3000/carts/${cartId}`);
+  if (!res.ok) throw new Error('Failed to load cart');
+  return res.json();
+};
+
+export const updateCart = async (cartId, cartData) => {
+  const res = await fetch(`http://localhost:3000/carts/${cartId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(cartData),
+  });
+  if (!res.ok) throw new Error('Failed to update cart');
+  return res.json();
+};
+
+export const createOrder = async (orderData) => {
+  const res = await fetch('http://localhost:3000/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(orderData),
+  });
+  if (!res.ok) throw new Error('Failed to create order');
+  return res.json();
+};

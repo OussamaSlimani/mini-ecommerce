@@ -1,23 +1,25 @@
-// src/pages/Produit.jsx
 import { useParams, Link } from 'react-router-dom';
 import { useProduct } from '../hooks/useProduct';
-import { useCategory,useCategories } from '../hooks/useCategories';
+import { useCategory } from '../hooks/useCategory';
+import { useCategories } from '../hooks/useCategories';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
-import ProductImageGallery from '../components/ProductImageGallery';
-import RecentlyViewedSidebar from '../components/RecentlyViewedSidebar';
-import OtherBrandsSidebar from '../components/OtherBrandsSidebar';
+import { useCart } from '../hooks/useCart';
 import { ShoppingCart, Home, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import ProductImageGallery from '../components/product/ProductImageGallery';
+import RecentlyViewedSidebar from '../components/product/RecentlyViewedSidebar';
+import OtherBrandsSidebar from '../components/product/OtherBrandsSidebar';
 
-const Produit = () => {
+const Product = () => {
   const { id } = useParams();
   const { data: product, isLoading, error } = useProduct(id);
-  const { addItem } = useRecentlyViewed();
+  const { addItem: addToRecentlyViewed } = useRecentlyViewed();
+  const { addItem: addToCart, isUpdating: isCartUpdating } = useCart();
   const [quantity, setQuantity] = useState(1);
 
-  // Find category from product name or fallback
+  // Find category that matches product name
   const { data: categories = [] } = useCategories();
-  const category = categories.find(c => 
+  const category = categories.find(c =>
     product?.name.toLowerCase().includes(c.name.toLowerCase())
   );
 
@@ -26,9 +28,9 @@ const Produit = () => {
   // Add to recently viewed on mount
   useEffect(() => {
     if (product) {
-      addItem(product);
+      addToRecentlyViewed(product);
     }
-  }, [product, addItem]);
+  }, [product, addToRecentlyViewed]);
 
   if (isLoading) return <LoadingState />;
   if (error || !product) return <ErrorState />;
@@ -37,8 +39,26 @@ const Produit = () => {
     ? Math.round(product.price * 100 / (100 - product.discountRate))
     : null;
 
-  const mainImage = `/products/${product.imageName}`;
-  const thumbnails = [mainImage]; // Extend later if needed
+  const mainImage = `../src/assets/img/products/${product.imageName}`;
+  const thumbnails = [
+    '../src/assets/img/thumb/product-thumb-1.jpg',
+    '../src/assets/img/thumb/product-thumb-2.jpg',
+    '../src/assets/img/thumb/product-thumb-3.jpg',
+  ]; 
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    addToCart(
+      {
+        id: product.id,
+        name: product.name,
+        imageName: product.imageName,
+        price: product.price,
+      },
+      quantity
+    );
+    setQuantity(1);
+  };
 
   return (
     <section className="py-8">
@@ -75,15 +95,16 @@ const Produit = () => {
               <div className="space-y-6">
                 <h1 className="text-3xl font-bold text-gray-800">{product.name}</h1>
 
+                {/* Price */}
                 <div className="flex items-center space-x-4">
-                  <div className="text-3xl font-bold text-green-600">${product.price}</div>
+                  <div className="text-3xl font-bold text-[#5a88ca]">${product.price}</div>
                   {originalPrice && (
                     <del className="text-xl text-gray-400">${originalPrice}</del>
                   )}
                 </div>
 
                 {/* Quantity & Add to Cart */}
-                <form className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4">
                   <input
                     type="number"
                     value={quantity}
@@ -92,13 +113,15 @@ const Produit = () => {
                     className="w-20 px-3 py-2 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <button
-                    type="submit"
-                    className="flex-1 bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 font-medium"
+                    type="button"
+                    onClick={handleAddToCart}
+                    disabled={isCartUpdating}
+                    className="flex-1 bg-[#5a88ca] text-white py-3 disabled:opacity-50 transition-colors flex items-center justify-center gap-2 font-medium"
                   >
                     <ShoppingCart className="w-5 h-5" />
-                    Add to Cart
+                    {isCartUpdating ? 'Adding...' : 'Add to Cart'}
                   </button>
-                </form>
+                </div>
 
                 {/* Description */}
                 <div className="prose max-w-none">
@@ -114,13 +137,15 @@ const Produit = () => {
   );
 };
 
-// Loading & Error States
+// Loading State
 const LoadingState = () => (
   <div className="container mx-auto py-20 text-center">
     <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
+    <p className="mt-4 text-gray-600">Loading product...</p>
   </div>
 );
 
+// Error State
 const ErrorState = () => (
   <div className="container mx-auto py-20 text-center">
     <p className="text-red-600 text-xl">Product not found.</p>
@@ -130,4 +155,4 @@ const ErrorState = () => (
   </div>
 );
 
-export default Produit;
+export default Product;

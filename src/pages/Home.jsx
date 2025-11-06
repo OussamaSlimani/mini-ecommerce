@@ -1,13 +1,12 @@
-import Carousel from '../components/Carousel';
-import Promo from "../components/Promo";
-import { Brands } from "../components/Brands";
-import ProductWidgetArea from "../components/ProductWidgetArea";
+import { Brands } from "../components/home/Brands";
+import EmblaCarousel from "../components/home/Carousel";
+import Promo from "../components/home/Promo";
+import ProductWidgetArea from "../components/home/ProductWidgetArea";
 
 const Home = () => {
   return (
-    <div className="container mx-auto py-12 text-center">
-      
-    <Carousel/>
+    <div className="container mx-auto py-12 text-center"> 
+    <EmblaCarousel/>
     <Promo/>
     <Brands/>
     <ProductWidgetArea />

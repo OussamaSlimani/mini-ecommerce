@@ -1,7 +1,7 @@
 import ProductWidget from './ProductWidget';
-import { useTopSellers } from '../hooks/useTopSellers';
-import { useTopNew } from '../hooks/useTopNew';
-import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
+import { useTopSellers } from '../../hooks/useTopSellers';
+import { useTopNew } from '../../hooks/useTopNew';
+import { useRecentlyViewed } from '../../hooks/useRecentlyViewed';
 
 const ProductWidgetArea = () => {
   const { data: topSellers = [], isLoading: loadingSellers } = useTopSellers();

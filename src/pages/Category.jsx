@@ -1,8 +1,7 @@
-// src/pages/Category.jsx
 import { useParams } from 'react-router-dom';
 import { useCategory } from '../hooks/useCategories';
 import { useProductList } from '../hooks/useProductList';
-import ProductCard from '../components/ProductCard';
+import ProductCard from '../components/Category/ProductCard';
 
 const Category = () => {
   const { id } = useParams();
@@ -16,14 +15,12 @@ const Category = () => {
 
   return (
     <>
-      {/* Page Title */}
-      <section className="bg-gray-100 py-12">
+      <section className="bg-[#5a88ca] text-white py-12 px-4">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold text-gray-800">{category.name}</h1>
+          <h1 className="text-5xl font-bold">{category.name}</h1>
         </div>
       </section>
 
-      {/* Product Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           {loadingProd ? (
@@ -38,7 +35,6 @@ const Category = () => {
             </div>
           )}
 
-          {/* Static Pagination */}
           <div className="mt-12 flex justify-center">
             <nav aria-label="Page navigation">
               <ul className="flex space-x-2">
