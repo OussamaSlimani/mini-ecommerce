@@ -1,0 +1,481 @@
+React / JSX / Composants
+
+Quelle est la différence entre un composant fonctionnel et un composant de classe ?
+Les composants fonctionnels sont des fonctions JavaScript qui retournent du JSX. Les classes utilisent extends React.Component et gèrent l’état via this.state.
+
+Que fait React.StrictMode ?
+Il active des vérifications et avertissements supplémentaires en développement pour détecter les effets secondaires et le code obsolète.
+
+Pourquoi utiliser useState dans un composant ?
+useState permet de stocker et mettre à jour l’état local du composant tout en déclenchant un rerender automatique.
+
+À quoi sert useEffect ?
+Il gère les effets de bord comme les requêtes API, les timers, ou la manipulation du DOM après le rendu.
+
+Quelle est la différence entre props et state ?
+Les props sont des données passées par le parent et immuables dans l’enfant, tandis que le state est interne et modifiable via setState ou useState.
+
+Pourquoi utiliser un composant ErrorBoundary ?
+Il capture les erreurs de rendu des composants enfants et affiche un fallback UI sans planter toute l’application.
+
+Que fait le hook useCallback ?
+Il mémorise une fonction pour éviter de la recréer à chaque rendu, utile pour optimiser les composants enfants.
+
+Pourquoi utiliser key dans un map() ?
+Pour aider React à identifier les éléments uniques et optimiser le rendu des listes.
+
+À quoi sert Fragment (<> </>) ?
+Permet de grouper plusieurs éléments JSX sans créer de balise HTML supplémentaire.
+
+Quelle est la différence entre un événement React et un événement DOM classique ?
+Les événements React sont synthétiques, normalisés et fonctionnent de la même manière sur tous les navigateurs.
+
+React Router
+
+Que fait <Outlet /> ?
+Il rend les routes enfants définies dans le routeur à l’intérieur d’un layout.
+
+Quelle est la différence entre index: true et path: '/' ?
+index: true définit la route par défaut d’un parent, équivalente à / pour les routes enfants.
+
+Comment récupérer un paramètre dynamique de route ?
+Avec useParams() de React Router, par exemple const { id } = useParams();.
+
+Que fait errorElement dans une route ?
+Il rend un composant fallback lorsqu’une erreur de rendu survient sur la route.
+
+Différence entre Link et <a> ?
+Link utilise la navigation client-side sans recharger la page, contrairement à <a> qui déclenche une requête HTTP complète.
+
+Comment naviguer programmatique avec React Router ?
+Avec useNavigate(), par exemple navigate('/cart').
+
+Comment faire une route protégée ?
+En utilisant un composant wrapper qui vérifie l’authentification avant de rendre l’enfant.
+
+Quelle est l’utilité de createBrowserRouter ?
+Elle crée un routeur basé sur l’historique du navigateur pour gérer la navigation SPA.
+
+Différence entre navigate('/path') et <Navigate to='/path' /> ?
+navigate() est utilisé dans le code, <Navigate> est un composant JSX qui redirige au rendu.
+
+Comment passer un état lors de la navigation ?
+Avec navigate('/path', { state: { ... } }) et useLocation() pour le récupérer.
+
+React Query
+
+Que fait useQuery ?
+Il récupère des données côté client et gère cache, loading et erreurs automatiquement.
+
+À quoi sert staleTime ?
+C’est la durée pendant laquelle les données sont considérées fraîches et ne déclenchent pas de nouvelle requête.
+
+À quoi sert enabled dans useQuery ?
+Permet de conditionner l’exécution de la requête, utile si une dépendance doit être chargée d’abord.
+
+Que fait useMutation ?
+Permet de gérer les actions modifiant les données (POST, PUT, DELETE) et gérer le succès/erreur.
+
+Que fait queryClient.invalidateQueries() ?
+Force la mise à jour des données en refetchant la query correspondante.
+
+Pourquoi stocker l’ID du panier dans localStorage ?
+Pour persister le panier entre les rechargements de page ou sessions.
+
+Comment calculer le total d’un panier avec React Query ?
+En utilisant les items du cart et en appliquant une fonction de réduction sur price * qty.
+
+Différence entre data et isLoading dans useQuery ?
+data contient les résultats, isLoading indique si la requête est en cours.
+
+Pourquoi utiliser onSuccess dans useMutation ?
+Pour effectuer des actions après un succès, comme invalider le cache ou afficher une notification.
+
+Que fait mutateAsync ?
+Permet d’exécuter la mutation en tant que Promise et d’attendre sa résolution.
+
+Hooks personnalisés
+
+À quoi sert useCart ?
+Fournit le panier, les fonctions d’ajout, suppression et modification, ainsi que le calcul des totaux.
+
+À quoi sert useRecentlyViewed ?
+Stocke les produits consultés dans un cookie et les limite à un maximum.
+
+Pourquoi utiliser useCallback dans useRecentlyViewed ?
+Pour éviter de recréer la fonction addItem à chaque rendu.
+
+Que fait useCategories ?
+Récupère toutes les catégories avec caching et staleTime via React Query.
+
+Pourquoi useCategory(id) est conditionné avec enabled: !!id ?
+Pour éviter d’exécuter la requête si l’ID est nul ou indéfini.
+
+Comment useTopSellers fonctionne ?
+Il récupère les produits les plus vendus et met en cache les résultats.
+
+Pourquoi useProductList(listId) utilise enabled: !!listId ?
+Pour éviter une requête inutile si listId n’est pas défini.
+
+Comment useCart calcule-t-il la taxe ?
+Il multiplie le sous-total par 0.2 (20%) pour obtenir la taxe.
+
+À quoi sert clearCart dans useCart ?
+Vide le panier et met à jour le backend via updateMutation.
+
+Que fait addItem dans useCart ?
+Ajoute un produit au panier ou incrémente la quantité s’il existe déjà.
+
+Composants spécifiques / UI
+
+Que fait ProductImageGallery ?
+Affiche l’image principale et des miniatures cliquables pour changer l’image sélectionnée.
+
+Pourquoi utiliser className conditionnel dans ProductImageGallery ?
+Pour appliquer un style actif sur l’image sélectionnée avec ring-blue-600.
+
+Comment CartItem gère la mise à jour de quantité ?
+Avec un input de type number et la fonction onUpdate passée en props.
+
+Pourquoi le bouton supprimer dans CartItem utilise onRemove ?
+Pour supprimer l’item du panier en appelant la fonction parent.
+
+Que fait le composant Checkout ?
+Affiche le formulaire de facturation/livraison, le panier, les méthodes de paiement et gère la validation de commande.
+
+Comment gérer l’adresse de livraison différente ?
+Avec un checkbox shipToDifferent et un rendu conditionnel du formulaire shipping.
+
+À quoi sert le composant PaymentOption ?
+Affiche les options de paiement avec icône, description et radio button.
+
+Pourquoi utiliser toFixed(2) pour les prix ?
+Pour afficher les valeurs monétaires avec 2 décimales uniformes.
+
+Comment gérer l’état de chargement dans le checkout ?
+Avec isLoading et affichage conditionnel de LoadingState.
+
+Pourquoi utiliser un skeleton loader dans Category ?
+Pour améliorer l’expérience utilisateur lors du chargement des produits avant la récupération des données.
+
+React & Composants
+
+Q: Qu’est-ce qu’un composant fonctionnel en React ?
+R: C’est une fonction qui retourne du JSX. Il peut utiliser des hooks pour gérer l’état et les effets.
+
+Q: Quelle est la différence entre useState et useEffect ?
+R: useState gère l’état local, useEffect exécute du code après le rendu, souvent pour les effets secondaires.
+
+Q: Pourquoi utiliser useMemo dans useSearch ?
+R: Pour éviter le recalcul des produits filtrés à chaque rendu, améliorant les performances.
+
+Q: Qu’est-ce que useParams dans React Router ?
+R: Il récupère les paramètres dynamiques de l’URL, comme l’ID d’un produit.
+
+Q: Quelle est la différence entre Link et a en React Router ?
+R: Link fait une navigation côté client sans recharger la page, tandis que a déclenche un rechargement complet.
+
+Q: Que fait le composant <ProductImageGallery> ?
+R: Il affiche l’image principale et les miniatures d’un produit.
+
+Q: Pourquoi utiliser un état local pour quantity ?
+R: Pour gérer la quantité sélectionnée par l’utilisateur avant de l’ajouter au panier.
+
+Q: Que signifie isLoading dans React Query ?
+R: Indique que la requête est en cours et que les données ne sont pas encore disponibles.
+
+Q: Pourquoi utiliser des composants séparés pour LoadingState et EmptyState ?
+R: Pour réutiliser et centraliser l’affichage des états communs à plusieurs composants.
+
+Q: Quelle est la différence entre isSuccess et isPending dans useMutation ?
+R: isPending indique que la mutation est en cours, isSuccess qu’elle a réussi.
+
+React Query & Hooks personnalisés
+
+Q: Qu’est-ce qu’un queryKey ?
+R: C’est l’identifiant unique d’une requête pour mettre en cache et invalider les données.
+
+Q: À quoi sert enabled: !!id dans useQuery ?
+R: Empêche l’exécution de la requête si l’ID est null ou undefined.
+
+Q: Pourquoi utiliser queryClient.invalidateQueries ?
+R: Pour rafraîchir les données mises en cache après une mutation, comme l’ajout au panier.
+
+Q: Quelle est la différence entre useQuery et useMutation ?
+R: useQuery récupère des données, useMutation modifie des données côté serveur.
+
+Q: Pourquoi stocker le panier dans un hook useCart ?
+R: Pour centraliser la logique de gestion du panier et la rendre réutilisable.
+
+Q: Comment useRecentlyViewed améliore l’expérience utilisateur ?
+R: Il conserve les produits consultés pour les afficher plus tard, augmentant les chances de conversion.
+
+Q: Que fait mutateAsync dans placeOrder ?
+R: Exécute la mutation et retourne une promesse pour gérer les succès ou erreurs.
+
+Q: Pourquoi utiliser async/await dans useCheckout ?
+R: Pour écrire du code asynchrone lisible et gérer les actions après la mutation.
+
+Q: Qu’est-ce que staleTime dans useQuery ?
+R: Temps pendant lequel les données sont considérées fraîches et ne sont pas rechargées.
+
+Q: Que fait setSearchQuery dans useSearch ?
+R: Met à jour l’état local de la recherche et déclenche le recalcul des produits filtrés.
+
+API & Fetch
+
+Q: Que fait fetchCategories ?
+R: Récupère toutes les catégories depuis le serveur et lève une erreur si la requête échoue.
+
+Q: Pourquoi vérifier response.ok ?
+R: Pour s’assurer que la requête HTTP a réussi avant de lire le corps JSON.
+
+Q: Quelle méthode HTTP est utilisée pour updateCart ?
+R: PUT, car elle remplace le panier existant avec de nouvelles données.
+
+Q: Quelle est la différence entre fetchCart et fetchCarts ?
+R: fetchCart récupère un panier spécifique, fetchCarts tous les paniers.
+
+Q: Que fait createOrder ?
+R: Envoie les informations de commande au serveur avec une requête POST.
+
+Q: Pourquoi utiliser JSON.stringify dans fetch ?
+R: Pour convertir l’objet JavaScript en chaîne JSON avant l’envoi au serveur.
+
+Q: Que renvoie fetchProductList(listId) ?
+R: La liste des produits correspondant à un identifiant de liste spécifique.
+
+Q: Pourquoi utiliser throw new Error dans les fonctions API ?
+R: Pour gérer les erreurs de manière cohérente et permettre à React Query de les attraper.
+
+Q: Quelle est la différence entre fetchTopSellers et fetchTopNew ?
+R: L’un récupère les produits les plus vendus, l’autre les produits récemment ajoutés.
+
+Q: Pourquoi certaines API utilisent id pour filtrer côté client ?
+R: Parce que le serveur retourne toutes les données, et on filtre localement si l’API ne fournit pas d’endpoint spécifique.
+
+JSX & Styling
+
+Q: Quelle classe Tailwind définit une grille responsive ?
+R: grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4.
+
+Q: Que fait animate-pulse ?
+R: Crée un effet de chargement animé pour simuler des blocs en attente de contenu.
+
+Q: Quelle est la différence entre px-4 et py-12 ?
+R: px-4 applique un padding horizontal, py-12 un padding vertical.
+
+Q: Pourquoi utiliser space-x-4 ?
+R: Pour ajouter un écart horizontal uniforme entre les éléments enfants.
+
+Q: Que fait rounded-lg ?
+R: Arrondit les coins d’un élément avec une bordure légèrement courbée.
+
+Q: Pourquoi utiliser max-w-md sur l’input de recherche ?
+R: Pour limiter la largeur de l’input sur des écrans larges et conserver un style cohérent.
+
+Q: Quelle classe Tailwind pour un texte bleu ?
+R: text-blue-600.
+
+Q: Pourquoi ajouter focus:outline-none sur un input ?
+R: Pour supprimer le contour par défaut lors de la sélection et appliquer un style personnalisé.
+
+Q: Que fait text-center ?
+R: Centre le texte horizontalement.
+
+Q: À quoi sert hover:text-blue-600 ?
+R: Change la couleur du texte au survol de la souris pour un effet visuel interactif.
+
+Logique et gestion des données
+
+Q: Comment calculer originalPrice avec une remise ?
+R: originalPrice = price * 100 / (100 - discountRate) pour retrouver le prix avant remise.
+
+Q: Pourquoi vérifier cart.items.length === 0 ?
+R: Pour afficher un message “panier vide” si aucun produit n’est présent.
+
+Q: Quelle est l’utilité de Math.max(1, value) pour la quantité ?
+R: Empêche l’utilisateur de choisir une quantité inférieure à 1.
+
+Q: Pourquoi utiliser map pour générer les lignes du panier ?
+R: Pour créer dynamiquement un tableau d’éléments JSX à partir de données.
+
+Q: Que fait find dans categories.find(c => ...) ?
+R: Retourne le premier élément correspondant à la condition ou undefined.
+
+Q: Pourquoi ajouter useEffect pour addToRecentlyViewed ?
+R: Pour s’assurer que le produit est ajouté uniquement après son chargement.
+
+Q: Quelle est l’importance de key dans une liste JSX ?
+R: Permet à React de suivre et réconcilier efficacement les éléments de la liste.
+
+Q: Pourquoi utiliser disabled={isUpdating} sur les boutons ?
+R: Pour empêcher plusieurs clics simultanés pendant l’update d’un panier.
+
+Q: Que fait toFixed(2) dans le panier ?
+R: Formate le prix avec deux décimales pour un affichage cohérent.
+
+Q: Pourquoi utiliser des hooks personnalisés comme useProduct ou useCart ?
+R: Pour centraliser la logique métier et réutiliser les fonctionnalités dans plusieurs composants.
+
+Quelle est la différence entre un composant fonctionnel et un composant de classe ?
+Fonctionnel : simple fonction avec hooks. Classe : utilise this.state et les méthodes de cycle de vie.
+
+Qu’est-ce qu’un "hook" en React ?
+Une fonction spéciale permettant d’utiliser l’état et d’autres fonctionnalités React dans les composants fonctionnels.
+
+Pourquoi utiliser useState plutôt qu’une variable normale ?
+Pour que React déclenche un re-render lorsque la valeur change.
+
+Quel est le rôle de useEffect ?
+Exécuter du code après le rendu, par ex. fetch API ou abonnement/désabonnement.
+
+Que fait props.children ?
+Il représente le contenu passé entre les balises d’un composant parent et permet de le rendre dynamiquement.
+
+Pourquoi utiliser key dans les listes ?
+Pour que React identifie chaque élément de manière unique et optimise le re-render.
+
+Qu’est-ce qu’un "controlled component" dans un formulaire ?
+Un input dont la valeur est contrôlée par l’état React.
+
+Qu’est-ce qu’un "uncontrolled component" ?
+Un input qui gère sa propre valeur sans synchronisation avec l’état React.
+
+Que fait React.memo ?
+Empêche le re-render d’un composant si ses props n’ont pas changé.
+
+Quand utiliser un composant de classe plutôt qu’un fonctionnel aujourd’hui ?
+Rarement, seulement si l’on a besoin d’anciennes APIs non converties aux hooks.
+
+Questions sur les hooks personnalisés
+
+Que fait le hook useProduct ?
+Il utilise react-query pour récupérer les données d’un produit par ID et gère cache et rechargement.
+
+Que fait l’option enabled: !!id dans useQuery ?
+Empêche la requête tant que id est falsy (null ou undefined).
+
+Que renvoie useProduct ?
+Un objet contenant data, isLoading, isError et d’autres propriétés de react-query.
+
+Que fait useTopSellers dans ProductWidgetArea ?
+Récupère les produits les plus vendus via un hook personnalisé.
+
+Pourquoi useRecentlyViewed retourne un tableau items ?
+Pour stocker et afficher les produits consultés récemment dans la sidebar.
+
+Comment limiter le nombre d’éléments affichés dans un hook ?
+Utiliser slice(0, n) sur le tableau retourné par le hook.
+
+Pourquoi useCategories peut retourner un isLoading ?
+Pour indiquer que les données ne sont pas encore chargées depuis l’API.
+
+Comment filtrer des catégories pour exclure l’actuelle ?
+Avec .filter(cat => cat.id !== currentCategoryId).
+
+Quel est le rôle du hook useEmblaCarousel ?
+Gérer le carrousel (scroll, bouclage, alignement et pagination) dans EmblaCarousel.
+
+Que fait emblaApi.scrollNext() ?
+Défile vers la slide suivante dans le carrousel.
+
+Questions sur React Router
+
+Que fait Link de react-router-dom ?
+Navigue vers une route interne sans recharger la page.
+
+Pourquoi utiliser to={/category/${cat.id}} ?
+Pour créer un lien dynamique vers la page de chaque catégorie.
+
+Quelle est la différence entre Link et a ?
+Link : navigation SPA sans reload. a : recharge la page entière.
+
+Que renvoie props.children quand utilisé avec Link ?
+Le contenu placé entre les balises Link.
+
+Que se passe-t-il si Link n’a pas de to ?
+Navigation impossible, React affiche un avertissement.
+
+Questions sur Tailwind CSS
+
+Que fait flex flex-col flex-grow dans ProductCard ?
+Affiche le conteneur en colonne et le fait grandir pour remplir l’espace disponible.
+
+Que fait group-hover:scale-105 sur une image ?
+Agrandit légèrement l’image au survol du parent group.
+
+Pourquoi utiliser line-clamp-2 ?
+Tronque le texte à deux lignes avec ... si trop long.
+
+Que fait overflow-hidden ?
+Masque le contenu qui dépasse des limites du conteneur.
+
+Que fait rounded-lg ?
+Arrondit les coins du conteneur.
+
+Que fait shadow-sm et hover:shadow-lg ?
+Ajoute une ombre subtile par défaut et plus grande au survol.
+
+Que fait transition-all duration-300 ?
+Anime toutes les propriétés CSS sur 300ms pour un effet fluide.
+
+Pourquoi utiliser text-[#5a88ca] au lieu de text-blue-600 ?
+Pour une couleur personnalisée non standard Tailwind.
+
+Que fait bg-white/80 ?
+Fond blanc avec opacité 80%.
+
+Que fait -translate-y-1/2 ?
+Déplace l’élément de 50% vers le haut (centrage vertical).
+
+Questions sur ErrorBoundary
+
+Que fait getDerivedStateFromError ?
+Met à jour le state lorsqu’une erreur survient dans un composant enfant.
+
+Pourquoi utiliser ErrorBoundary ?
+Pour éviter que toute l’application plante à cause d’une erreur dans un composant.
+
+Que rend ErrorBoundary si aucune erreur ?
+this.props.children → rend normalement les composants enfants.
+
+Peut-on utiliser un ErrorBoundary avec un hook fonctionnel ?
+Non, il faut un composant de classe pour cette API.
+
+Que fait state.hasError ?
+Indique si une erreur a été capturée.
+
+Questions sur le carrousel
+
+Que fait loop: true dans Embla ?
+Permet de boucler les slides à l’infini.
+
+Que fait align: 'center' ?
+Centre les slides dans la vue.
+
+Que fait containScroll: 'trimSnaps' ?
+Empêche les slides de dépasser les limites visibles.
+
+Que fait la div absolute bottom-4 left-1/2 -translate-x-1/2 ?
+Place les indicateurs de slide centrés en bas.
+
+Que fait onClick={() => emblaApi.scrollTo(index)} ?
+Navigue directement vers la slide correspondant au point cliqué.
+
+Questions sur ProductWidgetArea
+
+Pourquoi isLoading est passé à chaque ProductWidget ?
+Pour afficher un spinner ou skeleton si les données ne sont pas encore chargées.
+
+Pourquoi recentlyViewed a isLoading=false ?
+Les produits récents sont stockés localement et ne nécessitent pas de chargement.
+
+Que fait slice(0, 4) dans RecentlyViewedSidebar ?
+Limite l’affichage aux 4 derniers produits consultés.
+
+Pourquoi utiliser ins et del pour les prix ?
+ins → prix actuel. del → prix original barré pour les réductions.
+
+Pourquoi ProductWidgetArea utilise une grille grid-cols-3 ?
+Pour afficher trois widgets côte à côte sur les écrans moyens et grands.
