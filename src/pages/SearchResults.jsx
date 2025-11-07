@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
-import { useSearch } from '../hooks/useSearch';
-import ProductCard from '../components/Category/ProductCard.jsx';
+import { useSearch } from '../hooks/useProduct';
+import ProductCard from '../components/product/ProductCard.jsx';
 import { Search } from 'lucide-react';
 
 const SearchResults = () => {

@@ -1,6 +1,5 @@
 import ProductWidget from './ProductWidget';
-import { useTopSellers } from '../../hooks/useTopSellers';
-import { useTopNew } from '../../hooks/useTopNew';
+import { useTopSellers ,useTopNew} from '../../hooks/useProduct';
 import { useRecentlyViewed } from '../../hooks/useRecentlyViewed';
 
 const ProductWidgetArea = () => {

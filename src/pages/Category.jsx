@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
-import { useCategory } from '../hooks/useCategories';
-import { useProductList } from '../hooks/useProductList';
-import ProductCard from '../components/Category/ProductCard';
+import { useCategory } from '../hooks/useCategory';
+import { useProductList } from '../hooks/useProduct';
+import ProductCard from '../components/product/ProductCard';
 
 const Category = () => {
   const { id } = useParams();

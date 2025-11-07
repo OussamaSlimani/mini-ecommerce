@@ -2,6 +2,17 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { fetchCarts, fetchCart, updateCart } from '../services/api';
 
+const calculateTotals = (items) => {
+  const subTotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const tax = subTotal * 0.2;
+  const total = subTotal + tax;
+  return {
+    subTotal: Number(subTotal.toFixed(2)),
+    tax: Number(tax.toFixed(2)),
+    total: Number(total.toFixed(2)),
+  };
+};
+
 export const useCart = () => {
   const queryClient = useQueryClient();
   const [cartId, setCartId] = useState(() => localStorage.getItem('cartId'));
@@ -14,9 +25,9 @@ export const useCart = () => {
 
   useEffect(() => {
     if (allCarts.length > 0 && !cartId) {
-      const firstCartId = allCarts[0].id;
-      setCartId(firstCartId);
-      localStorage.setItem('cartId', firstCartId);
+      const id = allCarts[0].id;
+      setCartId(id);
+      localStorage.setItem('cartId', id);
     }
   }, [allCarts, cartId]);
 
@@ -26,7 +37,7 @@ export const useCart = () => {
     enabled: !!cartId,
   });
 
-  const updateMutation = useMutation({
+  const mutation = useMutation({
     mutationFn: ({ cartId, updatedCart }) => updateCart(cartId, updatedCart),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart', cartId] });
@@ -34,95 +45,42 @@ export const useCart = () => {
     },
   });
 
-  // Helper: Calculate cart totals
-  const calculateTotals = (items) => {
-    const subTotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
-    const tax = subTotal * 0.2;
-    const total = subTotal + tax;
-
-    return {
-      subTotal: Number(subTotal.toFixed(2)),
-      tax: Number(tax.toFixed(2)),
-      total: Number(total.toFixed(2)),
-    };
-  };
-
-  const updateQuantity = async (itemId, newQty) => {
-    if (!cart || newQty < 0) return;
-
-    const updatedItems = cart.items
-      .map(item => (item.id === itemId ? { ...item, qty: newQty } : item))
-      .filter(item => item.qty > 0);
-
+  const mutateCart = (updatedItems) => {
+    if (!cart) return;
     const { subTotal, tax, total } = calculateTotals(updatedItems);
-
-    await updateMutation.mutateAsync({
+    mutation.mutate({
       cartId,
-      updatedCart: {
-        ...cart,
-        items: updatedItems,
-        subTotal,
-        tax,
-        total,
-      },
+      updatedCart: { ...cart, items: updatedItems, subTotal, tax, total },
     });
   };
 
-  const removeItem = async (itemId) => {
-    if (!cart) return;
-
-    const updatedItems = cart.items.filter(item => item.id !== itemId);
-    const { subTotal, tax, total } = calculateTotals(updatedItems);
-
-    await updateMutation.mutateAsync({
-      cartId,
-      updatedCart: {
-        ...cart,
-        items: updatedItems,
-        subTotal,
-        tax,
-        total,
-      },
-    });
+  const updateQuantity = (itemId, qty) => {
+    if (!cart || qty < 0) return;
+    const items = cart.items
+      .map((i) => (i.id === itemId ? { ...i, qty } : i))
+      .filter((i) => i.qty > 0);
+    mutateCart(items);
   };
 
-  const addItem = async (product, qty = 1) => {
+  const removeItem = (itemId) => {
     if (!cart) return;
+    mutateCart(cart.items.filter((i) => i.id !== itemId));
+  };
 
-    const existing = cart.items.find(i => i.id === product.id);
-    const updatedItems = existing
-      ? cart.items.map(i =>
-          i.id === product.id ? { ...i, qty: i.qty + qty } : i
-        )
+  const addItem = (product, qty = 1) => {
+    if (!cart) return;
+    const existing = cart.items.find((i) => i.id === product.id);
+    const items = existing
+      ? cart.items.map((i) => (i.id === product.id ? { ...i, qty: i.qty + qty } : i))
       : [...cart.items, { ...product, qty }];
-
-    const { subTotal, tax, total } = calculateTotals(updatedItems);
-
-    await updateMutation.mutateAsync({
-      cartId,
-      updatedCart: {
-        ...cart,
-        items: updatedItems,
-        subTotal,
-        tax,
-        total,
-      },
-    });
+    mutateCart(items);
   };
 
-  const clearCart = async () => {
+  const clearCart = () => {
     if (!cartId) return;
-
-    const emptyCart = {
-      items: [],
-      subTotal: 0,
-      tax: 0,
-      total: 0,
-    };
-
-    await updateMutation.mutateAsync({
+    mutation.mutate({
       cartId,
-      updatedCart: emptyCart,
+      updatedCart: { items: [], subTotal: 0, tax: 0, total: 0 },
     });
   };
 
@@ -134,7 +92,7 @@ export const useCart = () => {
     updateQuantity,
     removeItem,
     addItem,
-    clearCart, 
-    isUpdating: updateMutation.isPending,
+    clearCart,
+    isUpdating: mutation.isPending,
   };
 };

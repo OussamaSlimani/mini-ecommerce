@@ -1,7 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useProduct } from '../hooks/useProduct';
-import { useCategory } from '../hooks/useCategory';
-import { useCategories } from '../hooks/useCategories';
+import { useCategories ,useCategory} from '../hooks/useCategory';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { useCart } from '../hooks/useCart';
 import { ShoppingCart, Home, ChevronRight } from 'lucide-react';

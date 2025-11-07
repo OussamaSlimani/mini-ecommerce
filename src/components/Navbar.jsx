@@ -1,5 +1,5 @@
 
-import { useCategories } from '../hooks/useCategories';
+import { useCategories } from '../hooks/useCategory';
 import NavItem from './NavItem';
 import NavSkeleton from './NavSkeleton';
 

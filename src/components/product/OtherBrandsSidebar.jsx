@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useCategories } from '../../hooks/useCategories';
+import { useCategories } from '../../hooks/useCategory';
 
 const OtherBrandsSidebar = ({ currentCategoryId }) => {
   const { data: categories = [], isLoading } = useCategories();
