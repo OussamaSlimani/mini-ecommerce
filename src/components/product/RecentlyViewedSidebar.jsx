@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { useRecentlyViewed } from '../../hooks/useRecentlyViewed';
+import { Link } from "react-router-dom";
+import { useRecentlyViewed } from "../../hooks/useRecentlyViewed";
 
 const RecentlyViewedSidebar = () => {
   const { items } = useRecentlyViewed();
@@ -8,7 +8,9 @@ const RecentlyViewedSidebar = () => {
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
-      <h2 className="text-2xl font-semibold text-orange-400 uppercase mb-4">Recently Viewed</h2>
+      <h2 className="text-2xl font-semibold text-orange-400 uppercase mb-4">
+        Recently Viewed
+      </h2>
       <div className="space-y-4">
         {items.slice(0, 4).map((product) => (
           <Link
@@ -22,12 +24,19 @@ const RecentlyViewedSidebar = () => {
               className="w-16 h-16 object-cover rounded"
             />
             <div>
-              <h3 className="text-sm font-medium text-gray-700 line-clamp-2">{product.name}</h3>
+              <h3 className="text-sm font-medium text-gray-700 line-clamp-2">
+                {product.name}
+              </h3>
               <div className="text-sm">
-                <ins className="text-[#5a88ca] font-semibold">${product.price}</ins>
+                <ins className="text-[#5a88ca] font-semibold">
+                  ${product.price}
+                </ins>
                 {product.discountRate > 0 && (
                   <del className="text-gray-400 ml-1">
-                    ${Math.round(product.price * 100 / (100 - product.discountRate))}
+                    $
+                    {Math.round(
+                      (product.price * 100) / (100 - product.discountRate)
+                    )}
                   </del>
                 )}
               </div>

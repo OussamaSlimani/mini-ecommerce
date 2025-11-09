@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createOrder } from '../services/api';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createOrder } from "../services/api";
 
 export const useCheckout = () => {
   const queryClient = useQueryClient();
@@ -7,17 +7,17 @@ export const useCheckout = () => {
   const mutation = useMutation({
     mutationFn: createOrder,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['carts'] });
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError: (err) => {
-      console.error('Checkout failed:', err);
+      console.error("Checkout failed:", err);
     },
   });
 
   const placeOrder = async (cart, formData) => {
     if (!cart || cart.items.length === 0) {
-      throw new Error('Cart is empty');
+      throw new Error("Cart is empty");
     }
 
     const order = {
@@ -26,7 +26,7 @@ export const useCheckout = () => {
         name: item.name,
         price: item.price,
         imageName: item.imageName,
-        category: item.category || 'unknown',
+        category: item.category || "unknown",
         imagePath: `/products/${item.imageName}`,
         qty: item.qty,
       })),

@@ -1,16 +1,16 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Menu, X } from 'lucide-react';
-import { useCart } from '../hooks/useCart';
-import Navbar from './Navbar';
-import { useState } from 'react';
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ShoppingCart, Menu, X } from "lucide-react";
+import { useCart } from "../hooks/useCart";
+import Navbar from "./Navbar";
+import { useState } from "react";
 
-import logo from '../assets/img/logo.png';
+import logo from "../assets/img/logo.png";
 
 const Header = () => {
   const { cart, isLoading } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleSearch = (e) => {
@@ -18,18 +18,21 @@ const Header = () => {
     const query = searchTerm.trim();
     if (query) {
       navigate(`/search?q=${encodeURIComponent(query)}`);
-      setSearchTerm(''); 
+      setSearchTerm("");
     }
   };
 
-  const itemCount = cart?.items?.reduce((sum, item) => sum + (item.qty || 0), 0) || 0;
-  const total = cart?.total ? Number(cart.total).toFixed(2) : '0.00';
-  const hideNavSearchbar = location.pathname === '/cart' || location.pathname === '/checkout' || location.pathname.startsWith('/search');
+  const itemCount =
+    cart?.items?.reduce((sum, item) => sum + (item.qty || 0), 0) || 0;
+  const total = cart?.total ? Number(cart.total).toFixed(2) : "0.00";
+  const hideNavSearchbar =
+    location.pathname === "/cart" ||
+    location.pathname === "/checkout" ||
+    location.pathname.startsWith("/search");
 
   return (
     <header className="container mx-auto px-4">
       <div className="flex items-center justify-between gap-4 py-3">
-        
         <div className="flex-shrink-0">
           <Link to="/" className="block w-20 h-20 sm:w-28 sm:h-28">
             <img
@@ -68,10 +71,10 @@ const Header = () => {
           >
             <span className="font-medium hidden sm:inline">Cart:</span>
             <span className="font-bold text-[#5a88ca]">
-              {isLoading ? '...' : `${total} €`}
+              {isLoading ? "..." : `${total} €`}
             </span>
             <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
-            
+
             <span
               className={`
                 absolute -top-2 -right-2 
@@ -79,10 +82,10 @@ const Header = () => {
                 w-6 h-6 text-xs font-bold text-white 
                 bg-[#5a88ca] rounded-full 
                 ring-2 ring-white shadow-sm
-                ${isLoading ? 'animate-pulse' : ''}
+                ${isLoading ? "animate-pulse" : ""}
               `}
             >
-              {isLoading ? '' : itemCount}
+              {isLoading ? "" : itemCount}
             </span>
           </Link>
 
@@ -92,9 +95,13 @@ const Header = () => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
-          )} 
+          )}
         </div>
       </div>
 
@@ -120,7 +127,7 @@ const Header = () => {
       )}
 
       {!hideNavSearchbar && (
-        <div className={`sm:block ${mobileMenuOpen ? 'block' : 'hidden'} mb-2`}>
+        <div className={`sm:block ${mobileMenuOpen ? "block" : "hidden"} mb-2`}>
           <Navbar />
         </div>
       )}

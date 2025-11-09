@@ -1,4 +1,4 @@
-export const Input = ({ label, type = 'text', required, ...props }) => (
+export const Input = ({ label, type = "text", required, ...props }) => (
   <div>
     <label className="block text-sm font-medium text-gray-700 mb-1">
       {label} {required && <span className="text-red-500">*</span>}

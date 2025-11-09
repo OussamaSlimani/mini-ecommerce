@@ -1,19 +1,19 @@
-import useEmblaCarousel from 'embla-carousel-react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import useEmblaCarousel from "embla-carousel-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const slides = [
-  { src: '/src/assets/img/carousel/h4-slide.png',   alt: 'Slide 1' },
-  { src: '/src/assets/img/carousel/h4-slide2.png',  alt: 'Slide 2' },
-  { src: '/src/assets/img/carousel/h4-slide3.png',  alt: 'Slide 3' },
-  { src: '/src/assets/img/carousel/h4-slide4.png',  alt: 'Slide 4' },
-  { src: '/src/assets/img/carousel/h4-slide5.png',  alt: 'Slide 5' },
+  { src: "/src/assets/img/carousel/h4-slide.png", alt: "Slide 1" },
+  { src: "/src/assets/img/carousel/h4-slide2.png", alt: "Slide 2" },
+  { src: "/src/assets/img/carousel/h4-slide3.png", alt: "Slide 3" },
+  { src: "/src/assets/img/carousel/h4-slide4.png", alt: "Slide 4" },
+  { src: "/src/assets/img/carousel/h4-slide5.png", alt: "Slide 5" },
 ];
 
 const EmblaCarousel = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
-    align: 'center',
-    containScroll: 'trimSnaps',
+    align: "center",
+    containScroll: "trimSnaps",
   });
 
   const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
@@ -21,7 +21,6 @@ const EmblaCarousel = () => {
 
   return (
     <div className="relative max-w-7xl mx-auto my-8 overflow-hidden rounded-xl">
-
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
           {slides.map((slide, index) => (

@@ -5,11 +5,11 @@ import ProductWidgetArea from "../components/home/ProductWidgetArea";
 
 const Home = () => {
   return (
-    <div className="container mx-auto py-12 text-center"> 
-    <EmblaCarousel/>
-    <Promo/>
-    <Brands/>
-    <ProductWidgetArea />
+    <div className="container mx-auto py-12 text-center">
+      <EmblaCarousel />
+      <Promo />
+      <Brands />
+      <ProductWidgetArea />
     </div>
   );
 };

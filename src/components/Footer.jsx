@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { useCategories } from '../hooks/useCategory';
+import { Link } from "react-router-dom";
+import { useCategories } from "../hooks/useCategory";
 
 const Footer = () => {
   const { data: categories = [], isLoading } = useCategories();
@@ -9,26 +9,31 @@ const Footer = () => {
       <div className="py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
             <div>
               <h2 className="text-3xl font-light text-white mb-4">
                 <span className="text-blue-500">MyStore</span>
               </h2>
               <p className="text-sm leading-relaxed">
-                SES Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis sunt id
-                doloribus vero quam laborum quas alias dolores blanditiis iusto consequatur, modi
-                aliquid eveniet eligendi iure eaque ipsam iste, pariatur omnis sint! Suscipit,
+                SES Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Perferendis sunt id doloribus vero quam laborum quas alias
+                dolores blanditiis iusto consequatur, modi aliquid eveniet
+                eligendi iure eaque ipsam iste, pariatur omnis sint! Suscipit,
                 debitis, quisquam. Laborum commodi veritatis magni at?
               </p>
             </div>
 
             <div>
-              <h2 className="text-3xl font-light text-white mb-4">Categories</h2>
+              <h2 className="text-3xl font-light text-white mb-4">
+                Categories
+              </h2>
               <ul className="space-y-2">
                 {isLoading ? (
                   <>
                     {[...Array(5)].map((_, i) => (
-                      <li key={i} className="h-6 bg-gray-700 rounded animate-pulse"></li>
+                      <li
+                        key={i}
+                        className="h-6 bg-gray-700 rounded animate-pulse"
+                      ></li>
                     ))}
                   </>
                 ) : (
@@ -47,10 +52,12 @@ const Footer = () => {
             </div>
 
             <div>
-              <h2 className="text-3xl font-light text-white mb-4">Newsletter</h2>
+              <h2 className="text-3xl font-light text-white mb-4">
+                Newsletter
+              </h2>
               <p className="text-sm mb-6">
-                Sign up to our newsletter and get exclusive deals you won’t find anywhere else
-                straight to your inbox!
+                Sign up to our newsletter and get exclusive deals you won’t find
+                anywhere else straight to your inbox!
               </p>
               <form className="space-y-3">
                 <input
@@ -72,7 +79,5 @@ const Footer = () => {
     </footer>
   );
 };
-
-
 
 export default Footer;

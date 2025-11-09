@@ -1,6 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { fetchCarts, fetchCart, updateCart } from '../services/api';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { fetchCarts, fetchCart, updateCart } from "../services/api";
 
 const calculateTotals = (items) => {
   const subTotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
@@ -15,10 +15,10 @@ const calculateTotals = (items) => {
 
 export const useCart = () => {
   const queryClient = useQueryClient();
-  const [cartId, setCartId] = useState(() => localStorage.getItem('cartId'));
+  const [cartId, setCartId] = useState(() => localStorage.getItem("cartId"));
 
   const { data: allCarts = [] } = useQuery({
-    queryKey: ['carts'],
+    queryKey: ["carts"],
     queryFn: fetchCarts,
     staleTime: 1000 * 60 * 5,
   });
@@ -27,12 +27,16 @@ export const useCart = () => {
     if (allCarts.length > 0 && !cartId) {
       const id = allCarts[0].id;
       setCartId(id);
-      localStorage.setItem('cartId', id);
+      localStorage.setItem("cartId", id);
     }
   }, [allCarts, cartId]);
 
-  const { data: cart, isLoading, error } = useQuery({
-    queryKey: ['cart', cartId],
+  const {
+    data: cart,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["cart", cartId],
     queryFn: () => fetchCart(cartId),
     enabled: !!cartId,
   });
@@ -40,8 +44,8 @@ export const useCart = () => {
   const mutation = useMutation({
     mutationFn: ({ cartId, updatedCart }) => updateCart(cartId, updatedCart),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart', cartId] });
-      queryClient.invalidateQueries({ queryKey: ['carts'] });
+      queryClient.invalidateQueries({ queryKey: ["cart", cartId] });
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
     },
   });
 
@@ -71,7 +75,9 @@ export const useCart = () => {
     if (!cart) return;
     const existing = cart.items.find((i) => i.id === product.id);
     const items = existing
-      ? cart.items.map((i) => (i.id === product.id ? { ...i, qty: i.qty + qty } : i))
+      ? cart.items.map((i) =>
+          i.id === product.id ? { ...i, qty: i.qty + qty } : i
+        )
       : [...cart.items, { ...product, qty }];
     mutateCart(items);
   };

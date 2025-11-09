@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useRecentlyViewed } from '../../hooks/useRecentlyViewed';
-import StarRating from './StarRating';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useRecentlyViewed } from "../../hooks/useRecentlyViewed";
+import StarRating from "./StarRating";
 
 const ProductItem = ({ product, onView }) => {
-
   const handleClick = () => {
     onView?.(product);
   };
@@ -30,7 +29,8 @@ const ProductItem = ({ product, onView }) => {
           <ins className="text-[#5a88ca] font-semibold">${product.price}</ins>
           {product.discountRate > 0 && (
             <del className="text-gray-400 ml-2">
-              ${Math.round(product.price * 100 / (100 - product.discountRate))}
+              $
+              {Math.round((product.price * 100) / (100 - product.discountRate))}
             </del>
           )}
         </div>
@@ -39,7 +39,7 @@ const ProductItem = ({ product, onView }) => {
   );
 };
 
-const ProductWidget = ({ title, items = [], isLoading, viewAllLink, type }) => {
+const ProductWidget = ({ title, items = [], isLoading, type }) => {
   const [showAll, setShowAll] = useState(false);
   const { addItem } = useRecentlyViewed();
 
@@ -54,7 +54,7 @@ const ProductWidget = ({ title, items = [], isLoading, viewAllLink, type }) => {
             onClick={() => setShowAll(!showAll)}
             className="bg-[#5a88ca] text-white p-3"
           >
-            {showAll ? 'Show Less' : 'View All'}
+            {showAll ? "Show Less" : "View All"}
           </button>
         )}
       </div>
@@ -79,7 +79,7 @@ const ProductWidget = ({ title, items = [], isLoading, viewAllLink, type }) => {
             <ProductItem
               key={product.id}
               product={product}
-              onView={type === 'recently-viewed' ? undefined : addItem}
+              onView={type === "recently-viewed" ? undefined : addItem}
             />
           ))}
         </div>

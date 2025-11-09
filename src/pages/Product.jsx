@@ -1,13 +1,13 @@
-import { useParams, Link } from 'react-router-dom';
-import { useProduct } from '../hooks/useProduct';
-import { useCategories ,useCategory} from '../hooks/useCategory';
-import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
-import { useCart } from '../hooks/useCart';
-import { ShoppingCart, Home, ChevronRight } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import ProductImageGallery from '../components/product/ProductImageGallery';
-import RecentlyViewedSidebar from '../components/product/RecentlyViewedSidebar';
-import OtherBrandsSidebar from '../components/product/OtherBrandsSidebar';
+import { useParams, Link } from "react-router-dom";
+import { useProduct } from "../hooks/useProduct";
+import { useCategories } from "../hooks/useCategory";
+import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
+import { useCart } from "../hooks/useCart";
+import { ShoppingCart, Home, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import ProductImageGallery from "../components/product/ProductImageGallery";
+import RecentlyViewedSidebar from "../components/product/RecentlyViewedSidebar";
+import OtherBrandsSidebar from "../components/product/OtherBrandsSidebar";
 
 const Product = () => {
   const { id } = useParams();
@@ -17,11 +17,9 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
 
   const { data: categories = [] } = useCategories();
-  const category = categories.find(c =>
+  const category = categories.find((c) =>
     product?.name.toLowerCase().includes(c.name.toLowerCase())
   );
-
-  const { data: categoryDetail } = useCategory(category?.id);
 
   useEffect(() => {
     if (product) {
@@ -32,16 +30,17 @@ const Product = () => {
   if (isLoading) return <LoadingState />;
   if (error || !product) return <ErrorState />;
 
-  const originalPrice = product.discountRate > 0
-    ? Math.round(product.price * 100 / (100 - product.discountRate))
-    : null;
+  const originalPrice =
+    product.discountRate > 0
+      ? Math.round((product.price * 100) / (100 - product.discountRate))
+      : null;
 
   const mainImage = `../src/assets/img/products/${product.imageName}`;
   const thumbnails = [
-    '../src/assets/img/thumb/product-thumb-1.jpg',
-    '../src/assets/img/thumb/product-thumb-2.jpg',
-    '../src/assets/img/thumb/product-thumb-3.jpg',
-  ]; 
+    "../src/assets/img/thumb/product-thumb-1.jpg",
+    "../src/assets/img/thumb/product-thumb-2.jpg",
+    "../src/assets/img/thumb/product-thumb-3.jpg",
+  ];
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -72,8 +71,11 @@ const Product = () => {
                 <Home className="w-4 h-4 mr-1" /> Home
               </Link>
               <ChevronRight className="w-4 h-4" />
-              <Link to={`/category/${category?.id}`} className="hover:text-blue-600">
-                {category?.name || 'Category'}
+              <Link
+                to={`/category/${category?.id}`}
+                className="hover:text-blue-600"
+              >
+                {category?.name || "Category"}
               </Link>
               <ChevronRight className="w-4 h-4" />
               <span className="text-gray-900">{product.name}</span>
@@ -81,16 +83,25 @@ const Product = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <ProductImageGallery mainImage={mainImage} thumbnails={thumbnails} />
+                <ProductImageGallery
+                  mainImage={mainImage}
+                  thumbnails={thumbnails}
+                />
               </div>
 
               <div className="space-y-6">
-                <h1 className="text-3xl font-bold text-gray-800">{product.name}</h1>
+                <h1 className="text-3xl font-bold text-gray-800">
+                  {product.name}
+                </h1>
 
                 <div className="flex items-center space-x-4">
-                  <div className="text-3xl font-bold text-[#5a88ca]">${product.price}</div>
+                  <div className="text-3xl font-bold text-[#5a88ca]">
+                    ${product.price}
+                  </div>
                   {originalPrice && (
-                    <del className="text-xl text-gray-400">${originalPrice}</del>
+                    <del className="text-xl text-gray-400">
+                      ${originalPrice}
+                    </del>
                   )}
                 </div>
 
@@ -98,7 +109,9 @@ const Product = () => {
                   <input
                     type="number"
                     value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                    onChange={(e) =>
+                      setQuantity(Math.max(1, parseInt(e.target.value) || 1))
+                    }
                     min="1"
                     className="w-20 px-3 py-2 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
@@ -109,13 +122,17 @@ const Product = () => {
                     className="flex-1 bg-[#5a88ca] text-white py-3 disabled:opacity-50 transition-colors flex items-center justify-center gap-2 font-medium"
                   >
                     <ShoppingCart className="w-5 h-5" />
-                    {isCartUpdating ? 'Adding...' : 'Add to Cart'}
+                    {isCartUpdating ? "Adding..." : "Add to Cart"}
                   </button>
                 </div>
 
                 <div className="prose max-w-none">
-                  <h2 className="text-xl font-bold text-gray-800 mb-3">Product Description</h2>
-                  <p className="text-gray-600 leading-relaxed">{product.description}</p>
+                  <h2 className="text-xl font-bold text-gray-800 mb-3">
+                    Product Description
+                  </h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    {product.description}
+                  </p>
                 </div>
               </div>
             </div>

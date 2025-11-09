@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const ProductImageGallery = ({ mainImage, thumbnails = [] }) => {
   const [selected, setSelected] = useState(mainImage);
-  const allImages = [mainImage, ...thumbnails.filter(img => img !== mainImage)]; // Avoid duplicates
+  const allImages = [
+    mainImage,
+    ...thumbnails.filter((img) => img !== mainImage),
+  ];
 
   return (
     <div className="space-y-6">
@@ -23,9 +26,10 @@ const ProductImageGallery = ({ mainImage, thumbnails = [] }) => {
               className={`
                 relative aspect-square rounded-lg overflow-hidden transition-all duration-200
                 ring-2 ring-offset-2 focus:outline-none focus:ring-blue-500
-                ${selected === img 
-                  ? 'ring-blue-600 shadow-md' 
-                  : 'ring-transparent hover:ring-blue-300'
+                ${
+                  selected === img
+                    ? "ring-blue-600 shadow-md"
+                    : "ring-transparent hover:ring-blue-300"
                 }
               `}
               aria-label={`View image ${index + 1}`}

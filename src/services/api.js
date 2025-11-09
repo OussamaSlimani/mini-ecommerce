@@ -1,11 +1,11 @@
-export const API_BASE_URL = 'http://localhost:3000';
+export const API_BASE_URL = "http://localhost:3000";
 
 // Fetch helper function
 const apiFetch = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
   const config = {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options.headers,
     },
     ...options,
@@ -14,7 +14,9 @@ const apiFetch = async (endpoint, options = {}) => {
   const response = await fetch(url, config);
 
   if (!response.ok) {
-    const error = new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
+    const error = new Error(
+      `Failed to fetch: ${response.status} ${response.statusText}`
+    );
     error.status = response.status;
     throw error;
   }
@@ -24,10 +26,9 @@ const apiFetch = async (endpoint, options = {}) => {
   return response.json();
 };
 
-
-// Requests 
+// Requests
 export const fetchCategories = async () => {
-  return apiFetch('/categories');
+  return apiFetch("/categories");
 };
 
 export const fetchCategoryById = async (id) => {
@@ -35,11 +36,11 @@ export const fetchCategoryById = async (id) => {
 };
 
 export const fetchTopSellers = async () => {
-  return apiFetch('/top-sellers-products');
+  return apiFetch("/top-sellers-products");
 };
 
 export const fetchTopNew = async () => {
-  return apiFetch('/top-new-products');
+  return apiFetch("/top-new-products");
 };
 
 export const fetchProductList = async (listId) => {
@@ -51,11 +52,11 @@ export const fetchProduct = async (id) => {
 };
 
 export const fetchAllProducts = async () => {
-  return apiFetch('/products');
+  return apiFetch("/products");
 };
 
 export const fetchCarts = async () => {
-  return apiFetch('/carts');
+  return apiFetch("/carts");
 };
 
 export const fetchCart = async (cartId) => {
@@ -64,14 +65,14 @@ export const fetchCart = async (cartId) => {
 
 export const updateCart = async (cartId, cartData) => {
   return apiFetch(`/carts/${cartId}`, {
-    method: 'PUT',
+    method: "PUT",
     body: JSON.stringify(cartData),
   });
 };
 
 export const createOrder = async (orderData) => {
-  return apiFetch('/orders', {
-    method: 'POST',
+  return apiFetch("/orders", {
+    method: "POST",
     body: JSON.stringify(orderData),
   });
 };

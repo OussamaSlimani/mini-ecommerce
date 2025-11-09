@@ -1,4 +1,4 @@
-import { RefreshCw, Truck, Lock, Gift } from 'lucide-react';
+import { RefreshCw, Truck, Lock, Gift } from "lucide-react";
 
 export default function Promo() {
   return (

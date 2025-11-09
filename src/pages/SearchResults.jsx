@@ -1,26 +1,26 @@
-import { useSearchParams } from 'react-router-dom';
-import { useSearch } from '../hooks/useProduct';
-import ProductCard from '../components/product/ProductCard.jsx';
-import { Search } from 'lucide-react';
+import { useSearchParams } from "react-router-dom";
+import { useSearch } from "../hooks/useProduct";
+import ProductCard from "../components/product/ProductCard.jsx";
+import { Search } from "lucide-react";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get('q') || '';
-  const { products, isLoading, searchQuery, setSearchQuery, total } = useSearch(query);
+  const query = searchParams.get("q") || "";
+  const { products, isLoading, searchQuery, setSearchQuery, total } =
+    useSearch(query);
 
   return (
     <section className="py-12">
       <div className="container mx-auto px-4">
-
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <Search className="w-6 h-6 text-blue-600" />
-            <h1 className="text-3xl font-bold text-gray-800">
-              Search Results
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-800">Search Results</h1>
           </div>
           <p className="text-gray-600">
-            {isLoading ? 'Searching...' : `${total} product${total !== 1 ? 's' : ''} found`}
+            {isLoading
+              ? "Searching..."
+              : `${total} product${total !== 1 ? "s" : ""} found`}
             {query && ` for "${query}"`}
           </p>
         </div>
@@ -41,7 +41,7 @@ const SearchResults = () => {
           <EmptyState query={query} />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {products.map(product => (
+            {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
@@ -66,7 +66,9 @@ const EmptyState = ({ query }) => (
       No products found
     </h3>
     <p className="text-gray-500">
-      {query ? `We couldn't find anything for "${query}"` : 'Try searching for a product'}
+      {query
+        ? `We couldn't find anything for "${query}"`
+        : "Try searching for a product"}
     </p>
   </div>
 );

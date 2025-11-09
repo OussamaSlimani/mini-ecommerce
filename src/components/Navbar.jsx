@@ -1,13 +1,17 @@
-
-import { useCategories } from '../hooks/useCategory';
-import NavItem from './NavItem';
-import NavSkeleton from './NavSkeleton';
+import { useCategories } from "../hooks/useCategory";
+import NavItem from "./NavItem";
+import NavSkeleton from "./NavSkeleton";
 
 const Navbar = () => {
   const { data: categories = [], isLoading, error } = useCategories();
 
   if (isLoading) return <NavSkeleton />;
-  if (error) return <div className="text-red-500 text-center py-2">Failed to load categories</div>;
+  if (error)
+    return (
+      <div className="text-red-500 text-center py-2">
+        Failed to load categories
+      </div>
+    );
 
   return (
     <nav className="bg-white shadow-sm">
@@ -29,5 +33,4 @@ const Navbar = () => {
   );
 };
 
-
-export default Navbar; 
+export default Navbar;
