@@ -37,7 +37,8 @@ export const useCheckout = () => {
         email: formData.billing.email,
         phone: formData.billing.phone,
         note: formData.orderNotes,
-        billingAdress: { ...formData.billing, apartment: undefined },
+        billingAdress: formData.billing,
+        apartment: formData.billing.apartment || "",
         shippingAdress: formData.shipToDifferent
           ? formData.shipping
           : formData.billing,

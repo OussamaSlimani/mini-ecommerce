@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import ProductImageGallery from "../components/product/ProductImageGallery";
 import RecentlyViewedSidebar from "../components/product/RecentlyViewedSidebar";
 import OtherBrandsSidebar from "../components/product/OtherBrandsSidebar";
+import ShowToast from "../components/ShowToast";
 
 const Product = () => {
   const { id } = useParams();
@@ -15,6 +16,7 @@ const Product = () => {
   const { addItem: addToRecentlyViewed } = useRecentlyViewed();
   const { addItem: addToCart, isUpdating: isCartUpdating } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [toast, setToast] = useState(null);
 
   const { data: categories = [] } = useCategories();
   const category = categories.find((c) =>
@@ -54,92 +56,106 @@ const Product = () => {
       quantity
     );
     setQuantity(1);
+    setToast({
+      type: "success",
+      message: "Product added to cart!",
+    });
   };
 
   return (
-    <section className="py-8">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <div className="lg:col-span-1 space-y-6">
-            <RecentlyViewedSidebar />
-            <OtherBrandsSidebar currentCategoryId={category?.id} />
-          </div>
+    <>
+      {toast && (
+        <ShowToast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
 
-          <div className="lg:col-span-3">
-            <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
-              <Link to="/" className="flex items-center hover:text-blue-600">
-                <Home className="w-4 h-4 mr-1" /> Home
-              </Link>
-              <ChevronRight className="w-4 h-4" />
-              <Link
-                to={`/category/${category?.id}`}
-                className="hover:text-blue-600"
-              >
-                {category?.name || "Category"}
-              </Link>
-              <ChevronRight className="w-4 h-4" />
-              <span className="text-gray-900">{product.name}</span>
-            </nav>
+      <section className="py-8">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="lg:col-span-1 space-y-6">
+              <RecentlyViewedSidebar />
+              <OtherBrandsSidebar currentCategoryId={category?.id} />
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <ProductImageGallery
-                  mainImage={mainImage}
-                  thumbnails={thumbnails}
-                />
-              </div>
+            <div className="lg:col-span-3">
+              <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
+                <Link to="/" className="flex items-center hover:text-blue-600">
+                  <Home className="w-4 h-4 mr-1" /> Home
+                </Link>
+                <ChevronRight className="w-4 h-4" />
+                <Link
+                  to={`/category/${category?.id}`}
+                  className="hover:text-blue-600"
+                >
+                  {category?.name || "Category"}
+                </Link>
+                <ChevronRight className="w-4 h-4" />
+                <span className="text-gray-900">{product.name}</span>
+              </nav>
 
-              <div className="space-y-6">
-                <h1 className="text-3xl font-bold text-gray-800">
-                  {product.name}
-                </h1>
-
-                <div className="flex items-center space-x-4">
-                  <div className="text-3xl font-bold text-[#5a88ca]">
-                    ${product.price}
-                  </div>
-                  {originalPrice && (
-                    <del className="text-xl text-gray-400">
-                      ${originalPrice}
-                    </del>
-                  )}
-                </div>
-
-                <div className="flex items-center space-x-4">
-                  <input
-                    type="number"
-                    value={quantity}
-                    onChange={(e) =>
-                      setQuantity(Math.max(1, parseInt(e.target.value) || 1))
-                    }
-                    min="1"
-                    className="w-20 px-3 py-2 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <ProductImageGallery
+                    mainImage={mainImage}
+                    thumbnails={thumbnails}
                   />
-                  <button
-                    type="button"
-                    onClick={handleAddToCart}
-                    disabled={isCartUpdating}
-                    className="flex-1 bg-[#5a88ca] text-white py-3 disabled:opacity-50 transition-colors flex items-center justify-center gap-2 font-medium"
-                  >
-                    <ShoppingCart className="w-5 h-5" />
-                    {isCartUpdating ? "Adding..." : "Add to Cart"}
-                  </button>
                 </div>
 
-                <div className="prose max-w-none">
-                  <h2 className="text-xl font-bold text-gray-800 mb-3">
-                    Product Description
-                  </h2>
-                  <p className="text-gray-600 leading-relaxed">
-                    {product.description}
-                  </p>
+                <div className="space-y-6">
+                  <h1 className="text-3xl font-bold text-gray-800">
+                    {product.name}
+                  </h1>
+
+                  <div className="flex items-center space-x-4">
+                    <div className="text-3xl font-bold text-[#5a88ca]">
+                      ${product.price}
+                    </div>
+                    {originalPrice && (
+                      <del className="text-xl text-gray-400">
+                        ${originalPrice}
+                      </del>
+                    )}
+                  </div>
+
+                  <div className="flex items-center space-x-4">
+                    <input
+                      type="number"
+                      value={quantity}
+                      onChange={(e) =>
+                        setQuantity(Math.max(1, parseInt(e.target.value) || 1))
+                      }
+                      min="1"
+                      className="w-20 px-3 py-2 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddToCart}
+                      disabled={isCartUpdating}
+                      className="flex-1 bg-[#5a88ca] text-white py-3 disabled:opacity-50 transition-colors flex items-center justify-center gap-2 font-medium"
+                    >
+                      <ShoppingCart className="w-5 h-5" />
+                      {isCartUpdating ? "Adding..." : "Add to Cart"}
+                    </button>
+                  </div>
+
+                  <div className="prose max-w-none">
+                    <h2 className="text-xl font-bold text-gray-800 mb-3">
+                      Product Description
+                    </h2>
+                    <p className="text-gray-600 leading-relaxed">
+                      {product.description}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

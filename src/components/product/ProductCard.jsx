@@ -1,24 +1,17 @@
 import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "../../hooks/useCart";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import ShowToast from "../ShowToast";
 
 const ProductCard = ({ product }) => {
   const { addItem, isUpdating } = useCart();
-  const [showToast, setShowToast] = useState(false);
-
-  useEffect(() => {
-    if (showToast) {
-      const timer = setTimeout(() => {
-        setShowToast(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [showToast]);
+  const [toast, setToast] = useState(null);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
     addItem(
       {
         id: product.id,
@@ -28,7 +21,11 @@ const ProductCard = ({ product }) => {
       },
       1
     );
-    setShowToast(true);
+
+    setToast({
+      type: "success",
+      message: "Product added to cart!",
+    });
   };
 
   const imageUrl = `/src/assets/img/products/${product.imageName}`;
@@ -39,10 +36,12 @@ const ProductCard = ({ product }) => {
 
   return (
     <>
-      {showToast && (
-        <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in">
-          Product added to cart!
-        </div>
+      {toast && (
+        <ShowToast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
       )}
 
       <div className="group relative bg-white rounded-lg shadow-sm hover:shadow-lg transition-all border duration-300 overflow-hidden flex flex-col h-full">
