@@ -12,7 +12,6 @@ export function Brands() {
 
   return (
     <div className="py-8">
-      <div className="zigzag-bottom"></div>
       <div className="container mx-auto px-4">
         <div className="brand-wrapper overflow-hidden">
           <div className="brand-list grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 items-center justify-items-center">

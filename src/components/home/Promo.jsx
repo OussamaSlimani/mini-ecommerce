@@ -3,7 +3,6 @@ import { RefreshCw, Truck, Lock, Gift } from "lucide-react";
 export default function Promo() {
   return (
     <div className="py-8">
-      <div className="zigzag-bottom"></div>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           <div className="single-promo promo1 bg-blue-600 text-white hover:bg-black p-6  flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow">
