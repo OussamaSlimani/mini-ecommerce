@@ -67,10 +67,10 @@ const ProductCard = ({ product }) => {
 
             <div className="mt-3 flex items-center gap-2">
               <span className="text-xl font-bold text-[#5a88ca]">
-                ${product.price}
+                €{product.price}
               </span>
               {originalPrice && (
-                <del className="text-sm text-gray-400">${originalPrice}</del>
+                <del className="text-sm text-gray-400">€{originalPrice}</del>
               )}
             </div>
           </div>

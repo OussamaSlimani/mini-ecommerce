@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import { useRecentlyViewed } from "../../hooks/useRecentlyViewed";
 
 const RecentlyViewedSidebar = () => {
-  const { items } = useRecentlyViewed();
+  const { recentlyViewedItems } = useRecentlyViewed();
 
-  if (items.length === 0) return null;
+  if (recentlyViewedItems.length === 0) return null;
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -12,7 +12,7 @@ const RecentlyViewedSidebar = () => {
         Recently Viewed
       </h2>
       <div className="space-y-4">
-        {items.slice(0, 4).map((product) => (
+        {recentlyViewedItems.slice(0, 4).map((product) => (
           <Link
             key={product.id}
             to={`/product/${product.id}`}

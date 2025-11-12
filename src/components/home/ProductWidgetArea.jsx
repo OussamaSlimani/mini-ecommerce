@@ -5,7 +5,7 @@ import { useRecentlyViewed } from "../../hooks/useRecentlyViewed";
 const ProductWidgetArea = () => {
   const { data: topSellers = [], isLoading: loadingSellers } = useTopSellers();
   const { data: topNew = [], isLoading: loadingNew } = useTopNew();
-  const { items: recentlyViewed } = useRecentlyViewed();
+  const { recentlyViewedItems } = useRecentlyViewed();
 
   return (
     <section className="py-12 bg-gray-50">
@@ -20,7 +20,7 @@ const ProductWidgetArea = () => {
 
           <ProductWidget
             title="Recently Viewed"
-            items={recentlyViewed}
+            items={recentlyViewedItems}
             isLoading={false}
             type="recently-viewed"
           />

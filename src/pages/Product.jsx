@@ -13,8 +13,8 @@ import ShowToast from "../components/ShowToast";
 const Product = () => {
   const { id } = useParams();
   const { data: product, isLoading, error } = useProduct(id);
-  const { addItem: addToRecentlyViewed } = useRecentlyViewed();
-  const { addItem: addToCart, isUpdating: isCartUpdating } = useCart();
+  const { addRecentlyViewedItem } = useRecentlyViewed();
+  const { addItem, isUpdating: isCartUpdating } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [toast, setToast] = useState(null);
 
@@ -25,9 +25,9 @@ const Product = () => {
 
   useEffect(() => {
     if (product) {
-      addToRecentlyViewed(product);
+      addRecentlyViewedItem(product);
     }
-  }, [product, addToRecentlyViewed]);
+  }, [product, addRecentlyViewedItem]);
 
   if (isLoading) return <LoadingState />;
   if (error || !product) return <ErrorState />;
@@ -46,7 +46,7 @@ const Product = () => {
 
   const handleAddToCart = () => {
     if (!product) return;
-    addToCart(
+    addItem(
       {
         id: product.id,
         name: product.name,
@@ -111,11 +111,11 @@ const Product = () => {
 
                   <div className="flex items-center space-x-4">
                     <div className="text-3xl font-bold text-[#5a88ca]">
-                      ${product.price}
+                      €{product.price}
                     </div>
                     {originalPrice && (
                       <del className="text-xl text-gray-400">
-                        ${originalPrice}
+                        €{originalPrice}
                       </del>
                     )}
                   </div>

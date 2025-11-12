@@ -93,7 +93,7 @@ const Cart = () => {
                           updateQuantity(item.id, parseInt(e.target.value) || 1)
                         }
                         min="1"
-                        className="w-12 text-center border border-gray-300 p-3"
+                        className="w-16 text-center border border-gray-300 p-3"
                         disabled={isUpdating}
                       />
                       <button

@@ -4,9 +4,9 @@ import ProductItem from "./ProductItem";
 
 const ProductWidget = ({ title, items = [], isLoading, type }) => {
   const [showAll, setShowAll] = useState(false);
-  const { addItem } = useRecentlyViewed();
+  const { addRecentlyViewedItem } = useRecentlyViewed();
 
-  const displayed = showAll ? items : items.slice(0, 3);
+  const displayedItems = showAll ? items : items.slice(0, 3);
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -15,7 +15,7 @@ const ProductWidget = ({ title, items = [], isLoading, type }) => {
         {items.length > 3 && (
           <button
             onClick={() => setShowAll(!showAll)}
-            className="bg-[#5a88ca] text-white p-3"
+            className="bg-[#5a88ca] text-white px-3 py-2 text-sm"
           >
             {showAll ? "Show Less" : "View All"}
           </button>
@@ -34,15 +34,17 @@ const ProductWidget = ({ title, items = [], isLoading, type }) => {
             </div>
           ))}
         </div>
-      ) : displayed.length === 0 ? (
+      ) : displayedItems.length === 0 ? (
         <p className="text-gray-500 text-center py-4">No products found</p>
       ) : (
         <div className="space-y-3">
-          {displayed.map((product) => (
+          {displayedItems.map((product) => (
             <ProductItem
               key={product.id}
               product={product}
-              onView={type === "recently-viewed" ? undefined : addItem}
+              onView={
+                type === "recently-viewed" ? undefined : addRecentlyViewedItem
+              }
             />
           ))}
         </div>

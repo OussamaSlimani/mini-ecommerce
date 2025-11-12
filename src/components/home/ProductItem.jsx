@@ -24,10 +24,10 @@ const ProductItem = ({ product, onView }) => {
         </h3>
         <StarRating rating={product.review} />
         <div className="mt-1 text-sm">
-          <ins className="text-[#5a88ca] font-semibold">${product.price}</ins>
+          <ins className="text-[#5a88ca] font-semibold">€{product.price}</ins>
           {product.discountRate > 0 && (
             <del className="text-gray-400 ml-2">
-              $
+              €
               {Math.round((product.price * 100) / (100 - product.discountRate))}
             </del>
           )}
