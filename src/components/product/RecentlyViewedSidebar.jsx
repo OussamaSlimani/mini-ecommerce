@@ -19,7 +19,7 @@ const RecentlyViewedSidebar = () => {
             className="flex gap-3 items-center hover:bg-gray-50 p-2 rounded transition-colors"
           >
             <img
-              src={`../../src/assets/img/products/${product.imageName}`}
+              src={`/src/assets/img/products/${product.imageName}`}
               alt={product.name}
               className="w-16 h-16 object-cover rounded"
             />

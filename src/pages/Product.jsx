@@ -37,11 +37,11 @@ const Product = () => {
       ? Math.round((product.price * 100) / (100 - product.discountRate))
       : null;
 
-  const mainImage = `../src/assets/img/products/${product.imageName}`;
+  const mainImage = `/src/assets/img/products/${product.imageName}`;
   const thumbnails = [
-    "../src/assets/img/thumb/product-thumb-1.jpg",
-    "../src/assets/img/thumb/product-thumb-2.jpg",
-    "../src/assets/img/thumb/product-thumb-3.jpg",
+    "/src/assets/img/thumb/product-thumb-1.jpg",
+    "/src/assets/img/thumb/product-thumb-2.jpg",
+    "/src/assets/img/thumb/product-thumb-3.jpg",
   ];
 
   const handleAddToCart = () => {

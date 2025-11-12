@@ -55,7 +55,7 @@ const Cart = () => {
                       className="flex justify-center"
                     >
                       <img
-                        src={`../src/assets/img/products/${item.imageName}`}
+                        src={`/src/assets/img/products/${item.imageName}`}
                         alt={item.name}
                         className="w-20 h-20 object-cover"
                       />
@@ -137,7 +137,7 @@ const Cart = () => {
                   className="flex flex-col items-center border -lg p-3 hover:shadow-md transition"
                 >
                   <img
-                    src={`../src/assets/img/products/${product.imageName}`}
+                    src={`/src/assets/img/products/${product.imageName}`}
                     alt={product.name}
                     className="w-24 h-50 object-cover mb-2"
                   />
