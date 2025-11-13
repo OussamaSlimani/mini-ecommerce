@@ -14,7 +14,7 @@ const Product = () => {
   const { id } = useParams();
   const { data: product, isLoading, error } = useProduct(id);
   const { addRecentlyViewedItem } = useRecentlyViewed();
-  const { addItem, isUpdating: isCartUpdating } = useCart();
+  const { addProductToCart, isUpdating: isCartUpdating } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [toast, setToast] = useState(null);
 
@@ -46,7 +46,7 @@ const Product = () => {
 
   const handleAddToCart = () => {
     if (!product) return;
-    addItem(
+    addProductToCart(
       {
         id: product.id,
         name: product.name,

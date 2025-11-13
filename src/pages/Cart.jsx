@@ -3,7 +3,7 @@ import { useCart } from "../hooks/useCart";
 import { Trash2, Minus, Plus, ShoppingCart } from "lucide-react";
 
 const Cart = () => {
-  const { cart, isLoading, updateQuantity, removeItem, isUpdating } = useCart();
+  const { cart, isLoading, updateProductQuantity, removeProductFromCart, isUpdating } = useCart();
 
   if (isLoading) return <LoadingState />;
   if (!cart || cart.items.length === 0) return <EmptyState />;
@@ -40,7 +40,7 @@ const Cart = () => {
                 <tr key={item.id} className="hover:bg-gray-50">
                   <td className="text-center border border-gray-300 py-4">
                     <button
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeProductFromCart(item.id)}
                       disabled={isUpdating}
                       className="text-red-600 hover:text-red-900 disabled:opacity-50"
                       title="Remove item"
@@ -79,7 +79,7 @@ const Cart = () => {
                     <div className="flex items-center justify-center space-x-2">
                       <button
                         onClick={() =>
-                          updateQuantity(item.id, Math.max(1, item.qty - 1))
+                          updateProductQuantity(item.id, Math.max(1, item.qty - 1))
                         }
                         disabled={isUpdating || item.qty <= 1}
                         className="bg-[#5a88ca] text-white p-3 disabled:opacity-50 rounded"
@@ -90,14 +90,14 @@ const Cart = () => {
                         type="number"
                         value={item.qty}
                         onChange={(e) =>
-                          updateQuantity(item.id, parseInt(e.target.value) || 1)
+                          updateProductQuantity(item.id, parseInt(e.target.value) || 1)
                         }
                         min="1"
                         className="w-16 text-center border border-gray-300 p-3"
                         disabled={isUpdating}
                       />
                       <button
-                        onClick={() => updateQuantity(item.id, item.qty + 1)}
+                        onClick={() => updateProductQuantity(item.id, item.qty + 1)}
                         disabled={isUpdating}
                         className="bg-[#5a88ca] text-white p-3 disabled:opacity-50 rounded"
                       >

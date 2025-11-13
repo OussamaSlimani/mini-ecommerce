@@ -23,7 +23,7 @@ const Navbar = () => {
             </li>
             {categories.map((cat) => (
               <li key={cat.id}>
-                <NavItem to={`/category/${cat.id}`} label={cat.name} />
+                <NavItem to={`/category/${cat.productListId}`} label={cat.name} />
               </li>
             ))}
           </ul>

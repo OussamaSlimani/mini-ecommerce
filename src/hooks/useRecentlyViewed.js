@@ -6,8 +6,8 @@ const MAX_RECENTLY_VIEWED_ITEMS = 10;
 
 const normalizeProduct = (product) => ({
   id: String(product.id),
-  name: product.name?.trim(),
-  imageName: product.imageName || product.images?.[0]?.name || null,
+  name: String(product.name),
+  imageName: product.imageName || null,
   price: Number(product.price) || 0,
   discountRate: Number(product.discountRate) || 0,
   review: Number(product.review) || 0,
@@ -52,11 +52,9 @@ export const useRecentlyViewed = () => {
         MAX_RECENTLY_VIEWED_ITEMS
       );
 
-      console.log("Updated recently viewed items:", updatedItems);
-
       try {
         Cookies.set(COOKIE_NAME, JSON.stringify(updatedItems), { expires: 30 });
-        console.log("Successfully saved recently viewed items to cookie");
+        // console.log("Successfully saved recently viewed items to cookie");
       } catch (error) {
         console.error("Failed to save recently viewed items", error);
       }

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { fetchCarts, fetchCart, updateCart } from "../services/api";
+import { fetchCart, updateCart, createCart } from "../services/api";
 
 const calculateTotals = (items) => {
   const subTotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
@@ -17,61 +17,54 @@ export const useCart = () => {
   const queryClient = useQueryClient();
   const [cartId, setCartId] = useState(() => localStorage.getItem("cartId"));
 
-  const { data: allCarts = [] } = useQuery({
-    queryKey: ["carts"],
-    queryFn: fetchCarts,
-    staleTime: 1000 * 60 * 5,
+  const createMutation = useMutation({
+    mutationFn: createCart,
+    onSuccess: (newCart) => {
+      const id = newCart.id;
+      setCartId(id);
+      localStorage.setItem("cartId", id);
+      queryClient.setQueryData(["cart", id], newCart);
+    },
   });
 
   useEffect(() => {
-    if (allCarts.length > 0 && !cartId) {
-      const id = allCarts[0].id;
-      setCartId(id);
-      localStorage.setItem("cartId", id);
+    if (!cartId && !createMutation.isPending) {
+      createMutation.mutate();
     }
-  }, [allCarts, cartId]);
+  }, [cartId, createMutation]);
 
   const {
     data: cart,
-    isLoading,
-    error,
+    isLoading: isCartLoading,
+    error: cartError,
   } = useQuery({
     queryKey: ["cart", cartId],
     queryFn: () => fetchCart(cartId),
     enabled: !!cartId,
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
   });
 
-  const mutation = useMutation({
+  const updateMutation = useMutation({
     mutationFn: ({ cartId, updatedCart }) => updateCart(cartId, updatedCart),
-    onSuccess: () => {
+    onSuccess: (updatedCart) => {
+      queryClient.setQueryData(["cart", cartId], updatedCart);
+    },
+    onError: () => {
       queryClient.invalidateQueries({ queryKey: ["cart", cartId] });
-      queryClient.invalidateQueries({ queryKey: ["carts"] });
     },
   });
 
   const mutateCart = (updatedItems) => {
-    if (!cart) return;
+    if (!cart || !cartId) return;
     const { subTotal, tax, total } = calculateTotals(updatedItems);
-    mutation.mutate({
+    updateMutation.mutate({
       cartId,
       updatedCart: { ...cart, items: updatedItems, subTotal, tax, total },
     });
   };
 
-  const updateQuantity = (itemId, qty) => {
-    if (!cart || qty < 0) return;
-    const items = cart.items
-      .map((i) => (i.id === itemId ? { ...i, qty } : i))
-      .filter((i) => i.qty > 0);
-    mutateCart(items);
-  };
-
-  const removeItem = (itemId) => {
-    if (!cart) return;
-    mutateCart(cart.items.filter((i) => i.id !== itemId));
-  };
-
-  const addItem = (product, qty = 1) => {
+  const addProductToCart = (product, qty = 1) => {
     if (!cart) return;
     const existing = cart.items.find((i) => i.id === product.id);
     const items = existing
@@ -82,23 +75,39 @@ export const useCart = () => {
     mutateCart(items);
   };
 
-  const clearCart = () => {
-    if (!cartId) return;
-    mutation.mutate({
-      cartId,
-      updatedCart: { items: [], subTotal: 0, tax: 0, total: 0 },
-    });
+  const updateProductQuantity = (productId, qty) => {
+    if (!cart || qty < 0) return;
+    const items = cart.items
+      .map((i) => (i.id === productId ? { ...i, qty } : i))
+      .filter((i) => i.qty > 0);
+    mutateCart(items);
   };
+
+  const removeProductFromCart = (productId) => {
+    if (!cart) return;
+    mutateCart(cart.items.filter((i) => i.id !== productId));
+  };
+
+  const resetCart = () => {
+    localStorage.removeItem("cartId");
+    setCartId(null);
+    queryClient.removeQueries({ queryKey: ["cart"] });
+  };
+
+  const isLoading = createMutation.isPending || isCartLoading;
+  const isUpdating = updateMutation.isPending;
+  const error = cartError || createMutation.error || updateMutation.error;
 
   return {
     cart,
     cartId,
     isLoading,
+    isUpdating,
+    isCreating: createMutation.isPending,
     error,
-    updateQuantity,
-    removeItem,
-    addItem,
-    clearCart,
-    isUpdating: mutation.isPending,
+    addProductToCart,
+    updateProductQuantity,
+    removeProductFromCart,
+    resetCart,
   };
 };

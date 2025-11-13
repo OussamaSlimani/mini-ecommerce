@@ -22,8 +22,7 @@ const Header = () => {
     }
   };
 
-  const itemCount =
-    cart?.items?.reduce((sum, item) => sum + (item.qty || 0), 0) || 0;
+  const itemCount = cart?.items?.length || 0;
   const total = cart?.total ? Number(cart.total).toFixed(2) : "0.00";
   const hideNavSearchbar =
     location.pathname === "/cart" ||

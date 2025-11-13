@@ -5,14 +5,14 @@ import { useState } from "react";
 import ShowToast from "../ShowToast";
 
 const ProductCard = ({ product }) => {
-  const { addItem, isUpdating } = useCart();
+  const { addProductToCart, isUpdating } = useCart();
   const [toast, setToast] = useState(null);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    addItem(
+    addProductToCart(
       {
         id: product.id,
         name: product.name,

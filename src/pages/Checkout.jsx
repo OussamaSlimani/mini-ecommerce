@@ -8,7 +8,7 @@ import { PaymentSection } from "../components/checkout/PaymentSection";
 import { OrderSummary } from "../components/checkout/OrderSummary";
 
 const Checkout = () => {
-  const { cart, isLoading: cartLoading, clearCart } = useCart();
+  const { cart, isLoading: cartLoading, resetCart } = useCart();
   const { placeOrder, isLoading, isSuccess, error } = useCheckout();
   const [shipToDifferent, setShipToDifferent] = useState(false);
   const [formData, setFormData] = useState({
@@ -51,7 +51,7 @@ const Checkout = () => {
     e.preventDefault();
     try {
       await placeOrder(cart, { ...formData, shipToDifferent });
-      clearCart();
+      resetCart();
     } catch (err) {
       console.error("Order failed:", err);
     }
