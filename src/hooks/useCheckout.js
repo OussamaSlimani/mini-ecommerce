@@ -7,18 +7,13 @@ export const useCheckout = () => {
   const mutation = useMutation({
     mutationFn: createOrder,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["carts"] });
       queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
-    onError: (err) => {
-      console.error("Checkout failed:", err);
     },
   });
 
-  const placeOrder = async (cart, formData) => {
-    if (!cart || cart.items.length === 0) {
-      throw new Error("Cart is empty");
-    }
+  const placeOrder = async (cart, { cartId, ...formData }) => {
+    if (!cart || !cart.items?.length) throw new Error("Cart is empty");
+    if (!cartId) throw new Error("Cart ID is missing");
 
     const order = {
       items: cart.items.map((item) => ({
@@ -39,11 +34,10 @@ export const useCheckout = () => {
         note: formData.orderNotes,
         billingAdress: formData.billing,
         apartment: formData.billing.apartment || "",
-        shippingAdress: formData.shipToDifferent
-          ? formData.shipping
-          : formData.billing,
+        shippingAdress: formData.shipToDifferent ? formData.shipping : formData.billing,
       },
       paymentMethod: formData.paymentMethod,
+      cartID: cartId, // Always valid
     };
 
     return mutation.mutateAsync(order);

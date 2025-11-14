@@ -1,20 +1,8 @@
-export const PaymentSection = ({ method, onChange }) => {
+export const PaymentSection = ({ value, onChange }) => {
   const paymentMethods = [
-    {
-      id: "bacs",
-      label: "Direct Bank Transfer",
-      desc: "Bank account transfer",
-    },
-    {
-      id: "cheque",
-      label: "Cheque Payment",
-      desc: "Send cheque by mail",
-    },
-    {
-      id: "paypal",
-      label: "PayPal",
-      desc: "PayPal or credit card",
-    },
+    { id: "bacs", label: "Direct Bank Transfer", desc: "Bank account transfer" },
+    { id: "cheque", label: "Cheque Payment", desc: "Send cheque by mail" },
+    { id: "paypal", label: "PayPal", desc: "PayPal or credit card" },
   ];
 
   return (
@@ -27,15 +15,15 @@ export const PaymentSection = ({ method, onChange }) => {
           <label
             key={id}
             className={`flex items-start gap-3 p-4 border rounded-lg cursor-pointer transition-colors ${
-              method === id ? "border-[#5a88ca] bg-gray-50" : "hover:bg-gray-50"
+              value === id ? "border-[#5a88ca] bg-gray-50" : "hover:bg-gray-50"
             }`}
           >
             <input
               type="radio"
               name="payment"
               value={id}
-              checked={method === id}
-              onChange={(e) => onChange(e.target.value)}
+              checked={value === id}
+              onChange={() => onChange(id)}
               className="mt-1"
             />
             <div>

@@ -38,7 +38,6 @@ export const useRecentlyViewed = () => {
     }
 
     const normalizedProduct = normalizeProduct(product);
-    console.log("Adding to recently viewed:", product);
 
     setRecentlyViewedItems((previousItems) => {
       // Remove any existing item with same id

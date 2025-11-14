@@ -1,39 +1,36 @@
 import { useParams } from "react-router-dom";
-import { useCategory } from "../hooks/useCategory";
 import { useProductList } from "../hooks/useProduct";
 import ProductCard from "../components/product/ProductCard";
 
 const Category = () => {
   const { id } = useParams();
-  const {
-    data: category,
-    isLoading: loadingCat,
-    error: catError,
-  } = useCategory(id);
+  
   const {
     data: productList,
     isLoading: loadingProd,
     error: prodError,
-  } = useProductList(category?.productListId);
+  } = useProductList(id);
 
-  if (loadingCat) return <LoadingState />;
-  if (catError || prodError) return <ErrorState />;
+  // Early returns for error/loading
+  if (prodError) return <ErrorState />;
+  if (loadingProd) return <LoadingState />;
 
   const products = productList?.items || [];
+  const categoryName = productList?.name || "Category";
 
   return (
     <>
+      {/* Hero Section */}
       <section className="bg-[#5a88ca] text-white py-12 px-4">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold">{category.name}</h1>
+          <h1 className="text-5xl font-bold">{categoryName}</h1>
         </div>
       </section>
 
+      {/* Products Section */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          {loadingProd ? (
-            <ProductGridSkeleton />
-          ) : products.length === 0 ? (
+          {products.length === 0 ? (
             <p className="text-center text-gray-500 py-12">
               No products found in this category.
             </p>
@@ -45,6 +42,7 @@ const Category = () => {
             </div>
           )}
 
+          {/* Static Pagination */}
           <div className="mt-12 flex justify-center">
             <nav aria-label="Page navigation">
               <ul className="flex space-x-2">
@@ -52,12 +50,17 @@ const Category = () => {
                   <a
                     href="#"
                     className="px-4 py-2 bg-white border border-gray-300 text-gray-500 rounded-l-md hover:bg-gray-50"
+                    onClick={(e) => e.preventDefault()}
                   >
                     Previous
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="px-4 py-2 bg-blue-600 text-white">
+                  <a
+                    href="#"
+                    className="px-4 py-2 bg-blue-600 text-white"
+                    onClick={(e) => e.preventDefault()}
+                  >
                     1
                   </a>
                 </li>
@@ -65,6 +68,7 @@ const Category = () => {
                   <a
                     href="#"
                     className="px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50"
+                    onClick={(e) => e.preventDefault()}
                   >
                     2
                   </a>
@@ -73,6 +77,7 @@ const Category = () => {
                   <a
                     href="#"
                     className="px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50"
+                    onClick={(e) => e.preventDefault()}
                   >
                     3
                   </a>
@@ -81,6 +86,7 @@ const Category = () => {
                   <a
                     href="#"
                     className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-r-md hover:bg-gray-50"
+                    onClick={(e) => e.preventDefault()}
                   >
                     Next
                   </a>
@@ -105,22 +111,6 @@ const LoadingState = () => (
 const ErrorState = () => (
   <div className="container mx-auto py-20 text-center text-red-600">
     <p>Failed to load category. Please try again later.</p>
-  </div>
-);
-
-// Skeleton Grid
-const ProductGridSkeleton = () => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    {[...Array(8)].map((_, i) => (
-      <div key={i} className="bg-white rounded-lg shadow-sm p-4 animate-pulse">
-        <div className="bg-gray-200 h-64 rounded"></div>
-        <div className="mt-4 space-y-3">
-          <div className="h-5 bg-gray-200 rounded w-3/4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-          <div className="h-10 bg-gray-200 rounded mt-4"></div>
-        </div>
-      </div>
-    ))}
   </div>
 );
 
