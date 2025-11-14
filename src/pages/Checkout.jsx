@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useCart } from "../hooks/useCart";
+import { useSelector, useDispatch } from "react-redux";
+import { resetCart } from "../store/cartSlice";
 import { useCheckout } from "../hooks/useCheckout";
 import { AddressForm } from "../components/checkout/AddressForm";
 import { PaymentSection } from "../components/checkout/PaymentSection";
 import { OrderSummary } from "../components/checkout/OrderSummary";
 
 const Checkout = () => {
-  const { cart, cartId, isLoading: cartLoading, resetCart } = useCart();
+  const dispatch = useDispatch();
+  const { cart, cartId, isLoading: cartLoading } = useSelector((state) => state.cart);
   const { placeOrder, isLoading, isSuccess, error } = useCheckout();
 
   const {
@@ -45,16 +47,16 @@ const Checkout = () => {
       },
       orderNotes: "",
       paymentMethod: "bacs",
-      shipToDifferent: false
+      shipToDifferent: false,
     },
   });
 
   const shipToDifferent = watch("shipToDifferent");
 
-const onSubmit = async (data) => {
-  await placeOrder(cart, { ...data, cartId });
-  resetCart();
-};
+  const onSubmit = async (data) => {
+    await placeOrder(cart, { ...data, cartId });
+    dispatch(resetCart());
+  };
 
   if (cartLoading)
     return (
@@ -97,28 +99,19 @@ const onSubmit = async (data) => {
           <h1 className="text-5xl font-bold text-white">Checkout</h1>
         </div>
       </section>
-
       <section className="py-12">
         <div className="container mx-auto px-4">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="grid grid-cols-1 lg:grid-cols-2 gap-8"
           >
-            {/* Left Column */}
             <div className="space-y-6">
-              {/* Billing Address */}
               <div className="bg-white p-6 rounded-lg shadow-sm">
                 <h2 className="text-2xl font-bold text-[#5a88ca] uppercase mb-6">
                   Billing Details
                 </h2>
-                <AddressForm
-                  prefix="billing"
-                  register={register}
-                  errors={errors.billing}
-                />
+                <AddressForm prefix="billing" register={register} errors={errors.billing} />
               </div>
-
-              {/* Ship to Different Address */}
               <div className="bg-white p-6 rounded-lg shadow-sm">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -128,22 +121,15 @@ const onSubmit = async (data) => {
                   />
                   <span className="font-medium">Ship to different address?</span>
                 </label>
-
                 {shipToDifferent && (
                   <div className="mt-6">
                     <h3 className="text-xl font-semibold text-[#5a88ca] mb-4">
                       Shipping Address
                     </h3>
-                    <AddressForm
-                      prefix="shipping"
-                      register={register}
-                      errors={errors.shipping}
-                    />
+                    <AddressForm prefix="shipping" register={register} errors={errors.shipping} />
                   </div>
                 )}
               </div>
-
-              {/* Order Notes */}
               <div className="bg-white p-6 rounded-lg shadow-sm">
                 <label className="block text-sm font-medium mb-2">
                   Order Notes
@@ -156,16 +142,12 @@ const onSubmit = async (data) => {
                 />
               </div>
             </div>
-
-            {/* Right Column */}
             <div className="space-y-6">
               <OrderSummary cart={cart} />
-
               <PaymentSection
                 value={watch("paymentMethod")}
                 onChange={(method) => setValue("paymentMethod", method)}
               />
-
               <button
                 type="submit"
                 disabled={isLoading}
@@ -180,7 +162,6 @@ const onSubmit = async (data) => {
                   </>
                 )}
               </button>
-
               {error && (
                 <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
                   {error.message || "Order failed"}

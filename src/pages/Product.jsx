@@ -2,7 +2,8 @@ import { useParams, Link } from "react-router-dom";
 import { useProduct } from "../hooks/useProduct";
 import { useCategories } from "../hooks/useCategory";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
-import { useCart } from "../hooks/useCart";
+import { useDispatch, useSelector } from "react-redux";
+import { addProductToCart } from "../store/cartSlice";
 import { ShoppingCart, Home, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import ProductImageGallery from "../components/product/ProductImageGallery";
@@ -12,12 +13,12 @@ import ShowToast from "../components/ShowToast";
 
 const Product = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const { data: product, isLoading, error } = useProduct(id);
   const { addRecentlyViewedItem } = useRecentlyViewed();
-  const { addProductToCart, isUpdating: isCartUpdating } = useCart();
+  const isUpdating = useSelector((state) => state.cart.isUpdating);
   const [quantity, setQuantity] = useState(1);
   const [toast, setToast] = useState(null);
-
   const { data: categories = [] } = useCategories();
   const category = categories.find((c) =>
     product?.name.toLowerCase().includes(c.name.toLowerCase())
@@ -46,14 +47,16 @@ const Product = () => {
 
   const handleAddToCart = () => {
     if (!product) return;
-    addProductToCart(
-      {
-        id: product.id,
-        name: product.name,
-        imageName: product.imageName,
-        price: product.price,
-      },
-      quantity
+    dispatch(
+      addProductToCart(
+        {
+          id: product.id,
+          name: product.name,
+          imageName: product.imageName,
+          price: product.price,
+        },
+        quantity
+      )
     );
     setQuantity(1);
     setToast({
@@ -71,7 +74,6 @@ const Product = () => {
           onClose={() => setToast(null)}
         />
       )}
-
       <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -79,7 +81,6 @@ const Product = () => {
               <RecentlyViewedSidebar />
               <OtherBrandsSidebar currentCategoryId={category?.id} />
             </div>
-
             <div className="lg:col-span-3">
               <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
                 <Link to="/" className="flex items-center hover:text-blue-600">
@@ -95,20 +96,14 @@ const Product = () => {
                 <ChevronRight className="w-4 h-4" />
                 <span className="text-gray-900">{product.name}</span>
               </nav>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <ProductImageGallery
-                    mainImage={mainImage}
-                    thumbnails={thumbnails}
-                  />
+                  <ProductImageGallery mainImage={mainImage} thumbnails={thumbnails} />
                 </div>
-
                 <div className="space-y-6">
                   <h1 className="text-3xl font-bold text-gray-800">
                     {product.name}
                   </h1>
-
                   <div className="flex items-center space-x-4">
                     <div className="text-3xl font-bold text-[#5a88ca]">
                       €{product.price}
@@ -119,7 +114,6 @@ const Product = () => {
                       </del>
                     )}
                   </div>
-
                   <div className="flex items-center space-x-4">
                     <input
                       type="number"
@@ -133,14 +127,13 @@ const Product = () => {
                     <button
                       type="button"
                       onClick={handleAddToCart}
-                      disabled={isCartUpdating}
+                      disabled={isUpdating}
                       className="flex-1 bg-[#5a88ca] text-white py-3 disabled:opacity-50 transition-colors flex items-center justify-center gap-2 font-medium"
                     >
                       <ShoppingCart className="w-5 h-5" />
-                      {isCartUpdating ? "Adding..." : "Add to Cart"}
+                      {isUpdating ? "Adding..." : "Add to Cart"}
                     </button>
                   </div>
-
                   <div className="prose max-w-none">
                     <h2 className="text-xl font-bold text-gray-800 mb-3">
                       Product Description
@@ -159,7 +152,6 @@ const Product = () => {
   );
 };
 
-// Loading State
 const LoadingState = () => (
   <div className="container mx-auto py-20 text-center">
     <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
@@ -167,7 +159,6 @@ const LoadingState = () => (
   </div>
 );
 
-// Error State
 const ErrorState = () => (
   <div className="container mx-auto py-20 text-center">
     <p className="text-red-600 text-xl">Product not found.</p>

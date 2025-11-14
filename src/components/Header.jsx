@@ -1,17 +1,22 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ShoppingCart, Menu, X } from "lucide-react";
-import { useCart } from "../hooks/useCart";
+import { useSelector, useDispatch } from "react-redux";
+import { initializeCart } from "../store/cartSlice";
 import Navbar from "./Navbar";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import logo from "../assets/img/logo.png";
 
 const Header = () => {
-  const { cart, isLoading } = useCart();
+  const dispatch = useDispatch();
+  const { cart, isLoading } = useSelector((state) => state.cart);
   const location = useLocation();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(initializeCart());
+  }, [dispatch]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -41,7 +46,6 @@ const Header = () => {
             />
           </Link>
         </div>
-
         {!hideNavSearchbar && (
           <div className="hidden sm:flex flex-1 max-w-md w-full">
             <form onSubmit={handleSearch} className="flex gap-2 w-full">
@@ -62,7 +66,6 @@ const Header = () => {
             </form>
           </div>
         )}
-
         <div className="flex items-center gap-2">
           <Link
             to="/cart"
@@ -73,13 +76,12 @@ const Header = () => {
               {isLoading ? "..." : `${total} €`}
             </span>
             <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
-
             <span
               className={`
-                absolute -top-2 -right-2 
-                flex items-center justify-center 
-                w-6 h-6 text-xs font-bold text-white 
-                bg-[#5a88ca] rounded-full 
+                absolute -top-2 -right-2
+                flex items-center justify-center
+                w-6 h-6 text-xs font-bold text-white
+                bg-[#5a88ca] rounded-full
                 ring-2 ring-white shadow-sm
                 ${isLoading ? "animate-pulse" : ""}
               `}
@@ -87,7 +89,6 @@ const Header = () => {
               {isLoading ? "" : itemCount}
             </span>
           </Link>
-
           {!hideNavSearchbar && (
             <button
               className="sm:hidden p-2 text-gray-700 hover:text-[#5a88ca] transition"
@@ -103,7 +104,6 @@ const Header = () => {
           )}
         </div>
       </div>
-
       {!hideNavSearchbar && (
         <div className="sm:hidden mb-2">
           <form onSubmit={handleSearch} className="flex gap-2 w-full">
@@ -124,7 +124,6 @@ const Header = () => {
           </form>
         </div>
       )}
-
       {!hideNavSearchbar && (
         <div className={`sm:block ${mobileMenuOpen ? "block" : "hidden"} mb-2`}>
           <Navbar />

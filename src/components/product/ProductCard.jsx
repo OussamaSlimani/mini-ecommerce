@@ -1,27 +1,29 @@
 import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
-import { useCart } from "../../hooks/useCart";
+import { useDispatch, useSelector } from "react-redux";
+import { addProductToCart } from "../../store/cartSlice";
 import { useState } from "react";
 import ShowToast from "../ShowToast";
 
 const ProductCard = ({ product }) => {
-  const { addProductToCart, isUpdating } = useCart();
+  const dispatch = useDispatch();
+  const isUpdating = useSelector((state) => state.cart.isUpdating);
   const [toast, setToast] = useState(null);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    addProductToCart(
-      {
-        id: product.id,
-        name: product.name,
-        imageName: product.imageName,
-        price: product.price,
-      },
-      1
+    dispatch(
+      addProductToCart(
+        {
+          id: product.id,
+          name: product.name,
+          imageName: product.imageName,
+          price: product.price,
+        },
+        1
+      )
     );
-
     setToast({
       type: "success",
       message: "Product added to cart!",
@@ -43,7 +45,6 @@ const ProductCard = ({ product }) => {
           onClose={() => setToast(null)}
         />
       )}
-
       <div className="group relative bg-white rounded-lg shadow-sm hover:shadow-lg transition-all border duration-300 overflow-hidden flex flex-col h-full">
         <Link to={`/product/${product.id}`} className="flex flex-col flex-grow">
           <div className="relative aspect-square w-full bg-gray-50 p-2 flex items-center justify-center overflow-hidden">
@@ -59,12 +60,10 @@ const ProductCard = ({ product }) => {
               </span>
             )}
           </div>
-
           <div className="p-2 flex flex-col flex-grow">
             <h3 className="text-lg font-medium text-gray-800 line-clamp-2 group-hover:text-[#5a88ca] transition-colors">
               {product.name}
             </h3>
-
             <div className="mt-3 flex items-center gap-2">
               <span className="text-xl font-bold text-[#5a88ca]">
                 €{product.price}
@@ -75,13 +74,12 @@ const ProductCard = ({ product }) => {
             </div>
           </div>
         </Link>
-
         <div className="px-4 pb-4 mt-auto">
           <button
             onClick={handleAddToCart}
             disabled={isUpdating}
             className={`
-              w-full bg-[#5a88ca] text-white py-3 px-4 
+              w-full bg-[#5a88ca] text-white py-3 px-4
               font-medium text-sm flex items-center justify-center gap-2
               hover:bg-[#4a78b8] focus:outline-none focus:ring-2 focus:ring-[#5a88ca] focus:ring-offset-2
               disabled:opacity-70 disabled:cursor-not-allowed
