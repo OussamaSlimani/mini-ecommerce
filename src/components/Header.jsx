@@ -3,7 +3,7 @@ import { ShoppingCart, Menu, X } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { initializeCart } from "../store/cartSlice";
 import Navbar from "./Navbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect ,useRef } from "react";
 import logo from "../assets/img/logo.png";
 
 const Header = () => {
@@ -14,9 +14,15 @@ const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const initializedRef = useRef(false);
+
   useEffect(() => {
-    dispatch(initializeCart());
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      dispatch(initializeCart());
+    }
   }, [dispatch]);
+
 
   const handleSearch = (e) => {
     e.preventDefault();

@@ -5,7 +5,10 @@ export const useCategories = () => {
   return useQuery({
     queryKey: ["categories"],
     queryFn: fetchCategories,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,   // cached 5 mins
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,      // prevents refetch on navigation
   });
 };
 
@@ -13,7 +16,7 @@ export const useCategory = (id) => {
   return useQuery({
     queryKey: ["category", id],
     queryFn: () => fetchCategoryById(id),
-    enabled: !!id, // only run if id is truthy
-    staleTime: 1000 * 60 * 5,
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5
   });
 };
